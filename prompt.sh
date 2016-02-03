@@ -1,9 +1,10 @@
 #!/bin/bash
 
+# Dockerfile ENTRYPOINT for training/docker-present
+
 # defaults
 DIR=/opt/revealjs/src/presentations/*
 FILES=$(find ${DIR} -printf "%f\n");
-
 
 # usage/help
 function usage() {
@@ -26,10 +27,8 @@ EOF
 exit 1
 }
 
-
 # display usage when executed without args
 if [ $# -eq 0 ]; then usage; fi
-
 
 # process args
 while getopts ":p:h" opt; do
@@ -50,7 +49,6 @@ while getopts ":p:h" opt; do
       ;;
   esac
 done
-
 
 # prompt/serve selected presentation
 printf "\nAvailable Presentations:\n\n"

@@ -26,8 +26,7 @@ RUN npm install
 COPY present.py /opt/revealjs/
 COPY present/css/docker.css /opt/revealjs/css/theme/
 COPY present/templates /opt/revealjs/templates
-COPY prompt.sh /bin/prompt/
-RUN chmod +x /bin/prompt/prompt.sh && chmod +x /opt/revealjs/present.py
+COPY prompt.sh /bin/prompt
 RUN git clone ${REPO} /opt/revealjs/src
 
 ENTRYPOINT ["/bin/prompt"]
