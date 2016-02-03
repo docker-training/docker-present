@@ -33,10 +33,12 @@ Digest: sha256:168922341fcec9f2ec78ec8b1f62ca461b8218624c79501acfec80c49c2441bb
 Status: Downloaded newer image for training/docker-present:latest
 ```
 
+### Help
+
 Launching a container from the image without any arguments will display the help (or use the `-h` flag):
 
 ```
-kizbitz@docker:~$ docker run -ti -v /var/run/docker.sock:/var/run/docker.sock training/docker-present
+kizbitz@docker:~$ docker run -ti --rm --name=docker-present -v /var/run/docker.sock:/var/run/docker.sock training/docker-present
 
 docker-present
 
@@ -49,21 +51,21 @@ docker-present
 
   Usage:
 
-    docker run -ti -v /var/run/docker.sock:/var/run/docker.sock training/docker-present -p <port>
+    docker run -ti --rm --name=docker-present -v /var/run/docker.sock:/var/run/docker.sock training/docker-present -p <port>
 ```
 
-Running a presentation:
+### Running a presentation:
 
-**Note:** Mounting the Docker socket and specifying the port is required.
+**Note:** Mounting the Docker socket and specifying the port is required. `--name=docker-present` is not required unless you want to pass in a custom presentation file. (See below)
 
 ```
-kizbitz@docker:~$ docker run -ti -v /var/run/docker.sock:/var/run/docker.sock training/docker-present -p 8000
+kizbitz@docker:~$ docker run -ti --rm --name=docker-present -v /var/run/docker.sock:/var/run/docker.sock training/docker-present -p 8000
 ```
 
 Select a presentation to serve from the menu:
 
 ```
-kizbitz@docker:~$ docker run -ti -v /var/run/docker.sock:/var/run/docker.sock training/docker-present -p 8000
+kizbitz@docker:~$ docker run -ti --rm --name=docker-present -v /var/run/docker.sock:/var/run/docker.sock training/docker-present -p 8000
 
 Available Presentations:
 
@@ -75,6 +77,13 @@ Enter selection: 2
 Attempting to start presentation 'presentation2' on port: 8000 ...
 bfaf705df7ea57419e5d9d33c9e50b72e183e81a34cc3a1d25a61f0fb0d72304
 kizbitz@docker:~$
+```
+
+### Run a custom/one-off presentation
+
+To pass in a custom/one-off presentation file run the container with `--name=docker-present` (required) and mount your custom file to the path: `/full/path/to/<file>:/opt/revealjs/src/presentations/<filename>` 
+```
+docker run -ti --rm --name=docker-present -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/custom:/opt/revealjs/src/presentations/custom training/docker-present 8000
 ```
 
 ## Templates
