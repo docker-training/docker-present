@@ -4,7 +4,7 @@ MAINTAINER Jerry Baker <jbaker@docker.com>
 
 # default presentation repository
 # Note: Will switch to 'ARG' as soon as Docker Hub and the build stack supports '--build-args'
-ENV REPO=https://github.com/kizbitz/presentations
+ENV REPO=https://github.com/docker-training/presentations
 
 RUN apt-get update && apt-get -y install \
     git \
