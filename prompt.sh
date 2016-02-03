@@ -1,6 +1,11 @@
 #!/bin/bash
 
-# Usage/Help
+# defaults
+DIR=/opt/revealjs/src/presentations/*
+FILES=$(find ${DIR} -printf "%f\n");
+
+
+# usage/help
 function usage() {
 cat << EOF
 
@@ -13,14 +18,20 @@ docker-present
     -h    Display help
     -p    Specify port (required)
 
+  Usage:
+
+    docker run -ti -v /var/run/docker.sock:/var/run/docker.sock training/docker-present -p <port>
+
 EOF
 exit 1
 }
 
-# Display usage when executed without args
+
+# display usage when executed without args
 if [ $# -eq 0 ]; then usage; fi
 
 
+# process args
 while getopts ":p:h" opt; do
   case "${opt}" in
     p)
@@ -40,20 +51,19 @@ while getopts ":p:h" opt; do
   esac
 done
 
-DIR=/opt/revealjs/src/presentations/*
-FILELIST=$(find ${DIR} -printf "%f\n");
 
+# prompt/serve selected presentation
 printf "\nAvailable Presentations:\n\n"
 PS3=$'\nEnter selection: '
-select FILE in ${FILELIST}; do
-  if [ -n "$FILE" ]; then
+select PRES in ${FILES}; do
+  if [ -n "$PRES" ]; then
 
-    echo "Attempting to start presentation '${FILE}' on port: ${PORT} ..."
+    echo "Attempting to start presentation '${PRES}' on port: ${PORT} ..."
     docker run -d --expose=${PORT} \
                -p ${PORT}:${PORT} \
                --entrypoint="$(pwd)/present.py" \
                -v /var/run/docker.sock:/var/run/docker.sock \
-               kizbitz/docker-present ${FILE} ${PORT}
+               training/docker-present ${PRES} ${PORT}
     exit 1
   fi
 done
