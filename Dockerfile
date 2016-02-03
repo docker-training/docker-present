@@ -23,10 +23,10 @@ RUN git clone https://github.com/denehyg/reveal.js-menu.git /opt/revealjs/plugin
 RUN npm install
 
 # setup
-COPY present.py /opt/revealjs
-COPY present/css/docker.css /opt/revealjs/css/theme
+COPY present.py /opt/revealjs/
+COPY present/css/docker.css /opt/revealjs/css/theme/
 COPY present/templates /opt/revealjs/templates
-COPY prompt.sh /bin/prompt
+COPY prompt.sh /bin/prompt/
 RUN git clone ${REPO} /opt/revealjs/src
 
 ENTRYPOINT ["/bin/prompt"]
