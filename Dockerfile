@@ -9,8 +9,8 @@ ENV REPO=https://github.com/docker-training/presentations
 RUN apt-get update && apt-get -y install \
     git \
     nodejs \
-    tree \
-    npm
+    npm \
+    tree
 
 # docker
 RUN curl -sSL https://get.docker.com | sh

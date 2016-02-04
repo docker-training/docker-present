@@ -89,7 +89,16 @@ You can use a custom/one-off presentation file by:
 Example:
 
 ```
-docker run -ti --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/custom:/opt/revealjs/src/presentations/custom training/docker-present 8000
+kizbitz@docker:~$ docker run -ti -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/custom:/opt/revealjs/src/presentations/custom training/docker-present -p 8000
+
+Available Presentations:
+
+1) custom
+2) presentation1
+3) presentation2
+4) presentation3
+
+Enter selection: 1
 ```
 
 ## Templates
