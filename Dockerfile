@@ -25,6 +25,7 @@ RUN npm install
 # setup
 COPY present.py /opt/revealjs/
 COPY present/css/docker.css /opt/revealjs/css/theme/
+COPY present/css/docker-code.css /opt/revealjs/lib/css
 COPY present/templates /opt/revealjs/templates
 COPY prompt.sh /bin/prompt
 RUN git clone ${REPO} /opt/revealjs/src

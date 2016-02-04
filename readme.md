@@ -4,7 +4,7 @@ A presentation engine for official Docker training
 
 ## Overview
 
-**docker-present** is a custom engine that compiles/serves presentations using [RevealJS](http://lab.hakim.se/reveal-js/).
+**docker-present** is a custom engine that compiles/serves presentations using [RevealJS](https://github.com/hakimel/reveal.js/).
 
 Provides:
 

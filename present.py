@@ -55,7 +55,7 @@ def adjust_image_paths(answer):
             else:
                 current = 'slides.md'
             with open(os.path.join(MODS, module, current), 'r') as slides:
-                file=slides.read().replace('](images/', '](modules/' + module + '/images/')
+                file=slides.read().replace('images/', 'src/modules/' + module + '/images/')
             with open(os.path.join(MODS, module, current), 'w') as slides:
                 slides.write(file)
 
@@ -72,8 +72,8 @@ if __name__ == '__main__':
     presentation = sys.argv[1]
     port = int(sys.argv[2])
 
-    create_html(presentation)
     adjust_image_paths(presentation)
+    create_html(presentation)
 
     print "Serving presentation '{0}' on port: {1} ...".format(presentation, port)
     run(presentation, port)

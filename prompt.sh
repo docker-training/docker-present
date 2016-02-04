@@ -61,7 +61,7 @@ select PRES in ${FILES}; do
                -p ${PORT}:${PORT} \
                --entrypoint="$(pwd)/present.py" \
                -v /var/run/docker.sock:/var/run/docker.sock \
-               --volumes-from docker-present \
+               --volumes-from ${HOSTNAME} \
                training/docker-present ${PRES} ${PORT}
     exit 1
   fi
