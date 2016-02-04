@@ -8,7 +8,7 @@ A presentation engine for official Docker training
 
 Provides:
 
-- The option to split up the different sections of your presentation into 'modules'
+- The option to split up the different sections of your presentation into 'modules' (instead of only using one file)
 - Create a presentation outline file and specify which modules you want included in each presentation
 - On launch, provides a prompt menu for selecting a presentation to serve
 - After selecting a presentation. The engine compiles the presentation and serves it on the port specified
@@ -38,7 +38,7 @@ Status: Downloaded newer image for training/docker-present:latest
 Launching a container from the image without any arguments will display the help (or use the `-h` flag):
 
 ```
-kizbitz@docker:~$ docker run -ti --rm --name=docker-present -v /var/run/docker.sock:/var/run/docker.sock training/docker-present
+kizbitz@docker:~$ docker run -ti --rm -v /var/run/docker.sock:/var/run/docker.sock training/docker-present
 
 docker-present
 
@@ -56,16 +56,16 @@ docker-present
 
 ### Running a presentation:
 
-**Note:** Mounting the Docker socket and specifying the port is required. `--name=docker-present` is not required unless you want to pass in a custom presentation file. (See below)
+**Note:** Mounting the Docker socket and specifying a port is required.
 
 ```
-kizbitz@docker:~$ docker run -ti --rm --name=docker-present -v /var/run/docker.sock:/var/run/docker.sock training/docker-present -p 8000
+kizbitz@docker:~$ docker run -ti --rm -v /var/run/docker.sock:/var/run/docker.sock training/docker-present -p 8000
 ```
 
 Select a presentation to serve from the menu:
 
 ```
-kizbitz@docker:~$ docker run -ti --rm --name=docker-present -v /var/run/docker.sock:/var/run/docker.sock training/docker-present -p 8000
+kizbitz@docker:~$ docker run -ti --rm -v /var/run/docker.sock:/var/run/docker.sock training/docker-present -p 8000
 
 Available Presentations:
 
@@ -81,9 +81,15 @@ kizbitz@docker:~$
 
 ### Run a custom/one-off presentation
 
-To pass in a custom/one-off presentation file run the container with `--name=docker-present` (required) and mount your custom file to the path: `/full/path/to/<file>:/opt/revealjs/src/presentations/<filename>` 
+You can use a custom/one-off presentation file by:
+
+- Creating a new temporary presentation file on your local host (See: https://github.com/docker-training/presentations)
+- Launch a new container and pass in your file by mounting it to the path: `/full/host/path/to/<file>:/opt/revealjs/src/presentations/<filename>`
+
+Example:
+
 ```
-docker run -ti --rm --name=docker-present -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/custom:/opt/revealjs/src/presentations/custom training/docker-present 8000
+docker run -ti --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/custom:/opt/revealjs/src/presentations/custom training/docker-present 8000
 ```
 
 ## Templates
@@ -92,4 +98,5 @@ To customize the theme modify the following files:
 
 - The base index.html: https://github.com/docker-training/docker-present/blob/master/present/templates/index.html
   - Note: These lines must stay in the template. The engine replaces with the presentation section: https://github.com/docker-training/docker-present/blob/master/present/templates/index.html#L39-L43
-- The css file: https://github.com/docker-training/docker-present/blob/master/present/css/docker.css
+- The primary css file: https://github.com/docker-training/docker-present/blob/master/present/css/docker.css
+- The code syntax highlighting css file: https://github.com/docker-training/docker-present/blob/master/present/css/docker-code.css
