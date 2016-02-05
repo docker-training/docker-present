@@ -7,6 +7,7 @@ MAINTAINER Jerry Baker <jbaker@docker.com>
 ENV REPO=https://github.com/docker-training/presentations
 
 RUN apt-get update && apt-get -y install \
+    bsdmainutils \
     git \
     nodejs \
     npm \

@@ -1,16 +1,17 @@
 #!/bin/bash
 
-# Dockerfile ENTRYPOINT for training/docker-present
+# Docker ENTRYPOINT for training/docker-present
 
 # defaults
 DIR=/opt/revealjs/src/presentations/*
-FILES=$(find ${DIR} -printf "%f\n");
+MENU=$(find ${DIR} -printf "%f ");
 
 # usage/help
 function usage() {
 cat << EOF
 
 docker-present
+==============
 
   A RevealJS Engine
 
@@ -22,6 +23,8 @@ docker-present
   Usage:
 
     docker run -ti -v /var/run/docker.sock:/var/run/docker.sock training/docker-present -p <port>
+
+    Note: Mounting the Docker socket is required.
 
 EOF
 exit 1
@@ -51,12 +54,15 @@ while getopts ":p:h" opt; do
 done
 
 # prompt/serve selected presentation
-printf "\nAvailable Presentations:\n\n"
+printf "\nAvailable Presentations\n"
+printf "=======================\n\n"
+find ${DIR} -printf "%f:@" -exec head -qn1 {} \; | column -t -s@ | sed 's/# //g'
+printf "\n---\n\n"
 PS3=$'\nEnter selection: '
-select PRES in ${FILES}; do
+select PRES in ${MENU}; do
   if [ -n "$PRES" ]; then
 
-    echo "Attempting to start presentation '${PRES}' on port: ${PORT} ..."
+    printf "\nAttempting to start presentation '${PRES}' on port: ${PORT} ...\n"
     docker run -d --expose=${PORT} \
                -p ${PORT}:${PORT} \
                --entrypoint="$(pwd)/present.py" \
