@@ -14,12 +14,11 @@ INDEX = '/opt/revealjs/index.html'
 SECTION = '''
                 <section data-markdown="src/modules/{0}/slides.md"
                      data-separator="^\\n---\\n"
-                     data-separator-vertical="^\\n\\n"
+                     data-separator-vertical="^\\n----\\n"
                      data-separator-notes="^Note:"
                      data-charset="iso-8859-15">
                 </section>
 '''
-
 
 def create_html(answer):
     """Create index.html"""
