@@ -25,15 +25,18 @@ def create_html(answer):
     """Create index.html"""
 
     slides = ""
-    with open(os.path.join(PRES, answer)) as modules:
-        for module in modules:
-            module = module.strip()
-            if os.path.exists(os.path.join(MODS, module, "slides.html")):
-                with open (os.path.join(MODS, module, 'slides.html'), "r") as f:
-                    html=f.read()
-                    slides += html
-            else:
-                slides += SECTION.format(module)
+    with open(os.path.join(PRES, answer)) as mods:
+        modules = mods.readlines()
+    for module in modules:
+        if not module.strip() or module.startswith("#"):
+            continue
+        module = module.strip()
+        if os.path.exists(os.path.join(MODS, module, "slides.html")):
+            with open (os.path.join(MODS, module, 'slides.html'), "r") as f:
+                html=f.read()
+                slides += html
+        else:
+            slides += SECTION.format(module)
 
 
     with open (TEMPLATE, "r") as t:
@@ -47,17 +50,20 @@ def adjust_image_paths(answer):
        When running the web server the paths are relative to index.html instead of the markdown file
     """
 
-    with open(os.path.join(PRES, answer)) as modules:
-        for module in modules:
-            module = module.strip()
-            if os.path.exists(os.path.join(MODS, module, 'slides.html')):
-                current = 'slides.html'
-            else:
-                current = 'slides.md'
-            with open(os.path.join(MODS, module, current), 'r') as slides:
-                file=slides.read().replace('images/', 'src/modules/' + module + '/images/')
-            with open(os.path.join(MODS, module, current), 'w') as slides:
-                slides.write(file)
+    with open(os.path.join(PRES, answer)) as mods:
+        modules = mods.readlines()
+    for module in modules:
+        if not module.strip() or module.startswith("#"):
+            continue
+        module = module.strip()
+        if os.path.exists(os.path.join(MODS, module, 'slides.html')):
+            current = 'slides.html'
+        else:
+            current = 'slides.md'
+        with open(os.path.join(MODS, module, current), 'r') as slides:
+            file=slides.read().replace('images/', 'src/modules/' + module + '/images/')
+        with open(os.path.join(MODS, module, current), 'w') as slides:
+            slides.write(file)
 
 
 def run(presentation, port):
