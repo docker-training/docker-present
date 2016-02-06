@@ -2,10 +2,7 @@ FROM python:2.7
 
 MAINTAINER Jerry Baker <jbaker@docker.com>
 
-# default presentation repository
-# Note: Will switch to 'ARG' as soon as Docker Hub and the build stack supports '--build-args'
-ENV REPO=https://github.com/docker-training/presentations
-
+# required packages
 RUN apt-get update && apt-get -y install \
     bsdmainutils \
     git \
@@ -29,6 +26,9 @@ COPY present/css/docker.css /opt/revealjs/css/theme/
 COPY present/css/docker-code.css /opt/revealjs/lib/css/
 COPY present/templates /opt/revealjs/templates
 COPY prompt.sh /bin/prompt
-RUN git clone ${REPO} /opt/revealjs/src
+
+# default presentation repository
+# Note: Switching to 'ARG' as soon as the Docker Hub stack supports '--build-args'
+RUN git clone https://github.com/docker-training/presentations /opt/revealjs/src
 
 ENTRYPOINT ["/bin/prompt"]
