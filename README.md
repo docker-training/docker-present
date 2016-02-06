@@ -101,6 +101,24 @@ Available Presentations:
 Enter selection: 1
 ```
 
+### Use a different source repository
+
+If you're currently developing modules/presentations or want to use a different repository, mount the entire directory to: `/opt/revealjs/src`
+
+```
+kizbitz@docker:~/sandbox$ git clone https://github.com/kizbitz/mypresentations
+Cloning into 'mypresentations'...
+remote: Counting objects: 107, done.
+remote: Compressing objects: 100% (93/93), done.
+remote: Total 107 (delta 22), reused 29 (delta 3), pack-reused 0
+Receiving objects: 100% (107/107), 28.69 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (22/22), done.
+Checking connectivity... done.
+
+kizbitz@docker:~/sandbox$ docker run -ti -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/mypresentations:/opt/revealjs/src training/docker-present -p 8000
+```
+
+
 ## Templates
 
 To customize the theme modify the following files:
