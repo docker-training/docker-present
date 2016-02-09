@@ -1,18 +1,18 @@
 # docker-present
 
-A presentation engine for official Docker training
+Controller image for official Docker training courses.
 
 ## Overview
 
-**docker-present** is a custom engine that compiles/serves presentations using [RevealJS](https://github.com/hakimel/reveal.js/).
+**docker-present** is a custom controller image that compiles/serves presentations using [RevealJS](https://github.com/hakimel/reveal.js/).
 
 Provides:
 
 - The option to split up the different sections of your presentation into 'modules' (instead of only using one file)
 - Create a presentation outline file and specify which modules you want included in each presentation
 - On launch, provides a prompt menu for selecting a presentation to serve
-- After selecting a presentation. The engine compiles the presentation and serves it on the port specified
-- The engine & presentations are bundled and distributed using Docker images
+- After selecting a presentation. The controller compiles the presentation and serves it on the port specified
+- The controller & presentations are bundled and distributed using Docker images
 
 For instructions on how to create modules and presentations see the related Github repository: https://github.com/docker-training/presentations
 
@@ -41,8 +41,6 @@ Launching a container from the image without any arguments will display the help
 kizbitz@docker:~$ docker run -ti --rm -v /var/run/docker.sock:/var/run/docker.sock training/docker-present
 
 docker-present
-
-  A RevealJS Engine
 
   Available Options:
 
@@ -124,6 +122,6 @@ kizbitz@docker:~/sandbox$ docker run -ti -v /var/run/docker.sock:/var/run/docker
 To customize the theme modify the following files:
 
 - The base index.html: https://github.com/docker-training/docker-present/blob/master/present/templates/index.html
-  - Note: These lines must stay in the template. The engine replaces with the presentation section: https://github.com/docker-training/docker-present/blob/master/present/templates/index.html#L39-L43
+  - Note: These lines must stay in the template. The controller replaces them with the presentation sections: https://github.com/docker-training/docker-present/blob/master/present/templates/index.html#L39-L43
 - The primary css file: https://github.com/docker-training/docker-present/blob/master/present/css/docker.css
 - The code syntax highlighting css file: https://github.com/docker-training/docker-present/blob/master/present/css/docker-code.css

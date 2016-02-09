@@ -13,8 +13,6 @@ cat << EOF
 docker-present
 ==============
 
-  A RevealJS Engine
-
   Available Options:
 
     -h    Display help
