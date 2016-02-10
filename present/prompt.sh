@@ -64,7 +64,6 @@ select PRES in ${MENU}; do
     docker run -d --expose=${PORT} \
                -p ${PORT}:${PORT} \
                --entrypoint="$(pwd)/present.py" \
-               -v /var/run/docker.sock:/var/run/docker.sock \
                --volumes-from ${HOSTNAME} \
                training/docker-present ${PRES} ${PORT}
     exit 1
