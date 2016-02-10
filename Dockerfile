@@ -21,11 +21,11 @@ RUN git clone https://github.com/denehyg/reveal.js-menu.git /opt/revealjs/plugin
 RUN npm install
 
 # setup
-COPY present.py /opt/revealjs/
+COPY present/present.py /opt/revealjs/
 COPY present/css/docker.css /opt/revealjs/css/theme/
 COPY present/css/docker-code.css /opt/revealjs/lib/css/
 COPY present/templates /opt/revealjs/templates
-COPY prompt.sh /bin/prompt
+COPY present/prompt.sh /bin/prompt
 
 # default presentation repository
 # Note: Switching to 'ARG' as soon as the Docker Hub stack supports '--build-args'
