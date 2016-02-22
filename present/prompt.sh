@@ -2,10 +2,6 @@
 
 # Docker ENTRYPOINT for training/docker-present
 
-# defaults
-DIR=/opt/revealjs/src/presentations/*
-MENU=$(find ${DIR} -printf "%f ");
-
 # usage/help
 function usage() {
 cat << EOF
@@ -51,11 +47,23 @@ while getopts ":p:h" opt; do
   esac
 done
 
+# check for custom repository
+if [ -d "/tmp/src" ]; then
+  rm -r /opt/revealjs/src
+  cp -r /tmp/src /opt/revealjs/
+fi
+
 # prompt/serve selected presentation
+DIR=/opt/revealjs/src/presentations/*
+MENU=$(find ${DIR} -printf "%f:");
+
 printf "\nAvailable Presentations\n"
 printf "=======================\n\n"
 find ${DIR} -printf "%f:@" -exec head -qn1 {} \; | column -t -s@ | sed 's/# //g'
 printf "\n---\n\n"
+
+OLD_IFS=${IFS}
+IFS=":"
 PS3=$'\nEnter selection: '
 select PRES in ${MENU}; do
   if [ -n "$PRES" ]; then
@@ -69,3 +77,5 @@ select PRES in ${MENU}; do
     exit 1
   fi
 done
+
+IFS=${OLD_IFS}

@@ -101,7 +101,7 @@ Enter selection: 1
 
 ### Use a different source repository
 
-If you're currently developing modules/presentations or want to use a different repository, mount the entire directory to: `/opt/revealjs/src`
+If you're currently developing modules/presentations or want to use a different repository, mount the entire directory to: `/tmp/src`
 
 ```
 kizbitz@docker:~/sandbox$ git clone https://github.com/kizbitz/mypresentations
@@ -113,7 +113,7 @@ Receiving objects: 100% (107/107), 28.69 KiB | 0 bytes/s, done.
 Resolving deltas: 100% (22/22), done.
 Checking connectivity... done.
 
-kizbitz@docker:~/sandbox$ docker run -ti -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/mypresentations:/opt/revealjs/src training/docker-present -p 8000
+kizbitz@docker:~/sandbox$ docker run -ti -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/mypresentations:/tmp/src training/docker-present -p 8000
 ```
 
 
