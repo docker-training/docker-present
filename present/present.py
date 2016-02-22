@@ -2,15 +2,17 @@
 # -*- coding: utf-8 -*-
 
 import os
+import shutil
 import SimpleHTTPServer
 import SocketServer
 import sys
 
 
-PRES = '/opt/revealjs/src/presentations'
-MODS = '/opt/revealjs/src/modules'
-TEMPLATE = '/opt/revealjs/templates/index.html'
-INDEX = '/opt/revealjs/index.html'
+BASE = '/opt/revealjs/'
+PRES = BASE + 'src/presentations'
+MODS = BASE + 'src/modules'
+TEMPLATE = BASE + 'templates/index.html'
+INDEX = BASE + 'index.html'
 SECTION = '''
                 <section data-markdown="src/modules/{0}/slides.md"
                      data-separator="^\\n---\\n"
@@ -19,6 +21,14 @@ SECTION = '''
                      data-charset="iso-8859-15">
                 </section>
 '''
+
+
+def check_custom():
+    """Check and adjust for a custom repository"""
+    if os.path.exists('/tmp/src'):
+        shutil.rmtree(BASE + 'src')
+        shutil.copytree('/tmp/src', BASE + 'src')
+
 
 def create_html(answer):
     """Create index.html"""
@@ -77,6 +87,7 @@ if __name__ == '__main__':
     presentation = sys.argv[1]
     port = int(sys.argv[2])
 
+    check_custom()
     adjust_image_paths(presentation)
     create_html(presentation)
 
