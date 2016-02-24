@@ -6,6 +6,25 @@
 @import url(../../lib/font/source-sans-pro/source-sans-pro.css);
 section.has-light-background, section.has-light-background h1, section.has-light-background h2, section.has-light-background h3, section.has-light-background h4, section.has-light-background h5, section.has-light-background h6 {
   color: #222; }
+  
+  
+  /*********************************************
+ * New Code Stefan Start
+ *********************************************/
+.accent_text_color { color: #4bb092 !important; }
+.half_container_one { width: 48%; float: left; }
+.half_container_two { width: 48%; float: right; }		
+.third_container_one { width: 30%; float: left; }		
+.third_container_two { width: 30%; margin: 0px 5% !important; float: left; }		
+.third_container_three { width: 30%; float: left; }
+.fourth_container_one { width: 22%; float: left; }
+.fourth_container_two { width: 22%; margin-left: 4% !important; float: left; }
+.table_cell { width: 100%; border: 1px solid rgba(255,255,255, 0.1) !important; padding: 20px !important; box-sizing: border-box; margin-bottom: 20px !important; font-size: 30px !important; }
+   /*********************************************
+ * New Code Stefan End
+ *********************************************/
+ 
+ 
 
 /*********************************************
  * GLOBAL STYLES
