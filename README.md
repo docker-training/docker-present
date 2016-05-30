@@ -101,7 +101,9 @@ Enter selection: 1
 
 ### Use a different source repository
 
-If you're currently developing modules/presentations or want to use a different repository, mount the entire directory to: `/tmp/src`
+If you're currently developing modules/presentations or want to use a different repository, mount the entire directory to: `/tmp/src`.
+Note that your presentations must be in a directory called `presentations`.
+In the below example your presentations would be in `$(pwd)/mypresentations/presentations`.
 
 ```
 kizbitz@docker:~/sandbox$ git clone https://github.com/kizbitz/mypresentations
