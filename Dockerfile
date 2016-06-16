@@ -18,7 +18,7 @@ WORKDIR /opt/revealjs
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN git clone https://github.com/hakimel/reveal.js.git /opt/revealjs
 RUN git clone https://github.com/denehyg/reveal.js-menu.git /opt/revealjs/plugin/menu
-RUN npm install
+RUN npm cache clean && npm install
 
 # setup
 COPY present/present.py /opt/revealjs/
