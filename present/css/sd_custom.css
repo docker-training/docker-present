@@ -7,8 +7,8 @@
 @font-face { font-family: OpenSans_Semibold; src: url(../fonts/OpenSans_Semibold.ttf); }
 /* Fonts */
 
-.half_container_one { width: 48%; float: left; }
-.half_container_two { width: 48%; float: right; }
+.half_container_one { width: 48% !important; float: left !important; }
+.half_container_two { width: 48% !important; float: right !important; }
 .cell { width: 100% !important; background-color: #254356; padding: 1px 30px !important; border-radius: 8px; box-sizing: border-box !important; margin-bottom: 10px !important; position: relative; min-height: 78px; box-sizing: border-box; }
 .button_stroke { width: auto !important; background-color: none; border: 3px solid #FFF !important; padding: 0px 30px !important; border-radius: 8px; box-sizing: border-box !important; margin-bottom: 10px !important; position: relative; display: inline-block !important; cursor: pointer; }
 .button_stroke p { margin: 15px 0px !important; }
@@ -46,8 +46,8 @@ img { border: none !important; box-shadow: none !important; }
 .green_bg li { color: #FFF !important; }
 
 .blue_bg { text-align: left !important; }
-.blue_bg a:link { color: #254356 !important; }
-.blue_bg a:visited { color: #254356 !important; }
+.blue_bg a:link { color: #FFF !important; }
+.blue_bg a:visited { color: #FFF !important; }
 .blue_bg a:active { color: #000 !important; }
 .blue_bg a:hover { color: #000 !important; }
 .blue_bg h2 { color: #FFF !important; }
@@ -56,8 +56,8 @@ img { border: none !important; box-shadow: none !important; }
 .blue_bg li { color: #FFF !important; }
 
 .gray_bg { text-align: left !important; }
-.gray_bg a:link { color: #254356 !important; }
-.gray_bg a:visited { color: #254356 !important; }
+.gray_bg a:link { color: #FFF !important; }
+.gray_bg a:visited { color: #FFF !important; }
 .gray_bg a:active { color: #000 !important; }
 .gray_bg a:hover { color: #000 !important; }
 .gray_bg h2 { color: #FFF !important; }
@@ -71,3 +71,4 @@ p { font-family: OpenSans_Light !important; font-size: 28px !important; font-wei
 li { font-family: OpenSans_Light !important; font-size: 28px !important; font-weight: 100 !important; }
 
 pre { background-color: #254356 !important; color: #FFF; padding: 20px !important; border: 1px solid rgba(255,255,255, 0.1); border-radius: 8px; font-family: monospace; white-space: pre; font-weight: 300; font-size: 0.4em !important; }
+pre.large { font-size: 0.6em !important; }
