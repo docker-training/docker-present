@@ -65,17 +65,45 @@ img { border: none !important; box-shadow: none !important; }
 .gray_bg p { color: #FFF !important; }
 .gray_bg li { color: #FFF !important; }
 
-code {
-  color: darkred !important;
-  background-color: lightgray !important;
-  border: solid black 1px !important;
-  padding: 2px !important;
-}
-
 h2 { font-family: OpenSans_Light !important; font-size: 46px !important; font-weight: 100 !important; }
 h3 { font-family: OpenSans_Light !important; font-size: 36px !important; font-weight: 100 !important; }
 p { font-family: OpenSans_Light !important; font-size: 28px !important; font-weight: 100 !important; }
 li { font-family: OpenSans_Light !important; font-size: 28px !important; font-weight: 100 !important; }
 
-pre { background-color: #254356 !important; color: #FFF; padding: 20px !important; border: 1px solid rgba(255,255,255, 0.1); border-radius: 8px; font-family: monospace; white-space: pre; font-weight: 300; font-size: 0.4em !important; }
+.reveal pre { 
+  background-color: rgba(255, 251, 255, 0.9); 
+  color: darkblue; 
+  padding: 20px; 
+  border: 1px solid rgba(255,255,255, 0.1); 
+  border-radius: 8px; 
+  font-family: monospace; 
+  white-space: pre; 
+  font-weight: 300; 
+  font-size: 0.4em; 
+}
+
 pre.large { font-size: 0.6em !important; }
+
+.reveal code {
+    font-family: monospace;
+    color: darkred;
+    border-style: solid;
+    border-color: darkgray;
+    border-width: 1px;
+    background-color: #FFFBFF;
+    padding: 2px;
+}
+
+.reveal code.smaller {
+  font-size: 0.8em;
+}
+
+.reveal .topcorner{
+   position:absolute;
+   top:0;
+   right:0;
+  }
+
+.reveal .topcorner img {
+   background: rgba(255, 255, 255, 0);
+}
