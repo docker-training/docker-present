@@ -38,7 +38,2970 @@
 		<img src="images/docker_logo_flat.png" style="width: 50px; height: auto; position: fixed; bottom: 30px; left: 30px; z-index: 9999;" alt="docker logo">
         <div class="reveal">
             <div class="slides">
-                ---modules---
+                <section data-background="#1488c6" class="blue_bg">
+	<section data-background="src/modules/dops-welcome/images/title_slide_lesson_2.jpg" class="blue_bg">
+		<h2>Docker for Enterprise Operations</h2>
+	</section>
+
+	<section data-background="#1488c6" class="blue_bg">
+		<h2>A Note on Pedagogy</h2>
+		<ul>
+			<li>Docker believes in learning by doing, with support.</li>
+			<li>Work with your colleagues to solve problems, and don't hesitate to interrupt the lecture for clarification.</li>
+		</ul>		
+
+		<aside class="notes">Speaker Notes: In this course you will be challenged to complete a series of learning tasks upfront, but will be supported by content and the help from the instructor.  You may listen to a mini-lecture that will supplement the task, but emphasis will be completing the tasks.  You will be able to see how much you've learned through taking our pre and post assessments.</aside>
+	</section>
+
+	<section data-background="#1488c6" class="blue_bg">
+		<h2>Session Logistics</h2>
+		<ul>
+			<li>2 days duration</li>
+			<li>mostly exercises</li>
+			<li>regular breaks</li>
+		</ul>
+	</section>
+
+	<section data-background="#1488c6" class="blue_bg">
+		<h2>Assumed Knowledge and Requirements</h2>
+		<ul>
+			<li>Familiarity with using the Linux command line</li>
+			<li>A UCP License (download one at <a href='https://docs.docker.com/datacenter/ucp/1.1/installation/license/'>https://docs.docker.com/datacenter/ucp/1.1/installation/license/</a>)</li>
+			<li style="padding-top: 10px;">You should know the basics of Docker
+				<ul>
+					<li>Run a Docker container</li>
+					<li>Search for and pull images from Docker Hub</li>
+					<li>Use Docker for Mac / Windows on your local machine</li>
+				</ul>
+			</li>
+		</ul>
+	</section>
+
+	<section data-background="#1488c6" class="blue_bg">
+		<h2>Your lab environment</h2>
+		<ul>
+			<li>You have been given several instances for use in exercises.</li>
+			<li>Ask instructor for access credentials if you don't have them already.</li>
+		</ul>
+	</section>
+
+	<section data-background="#1488c6" class="blue_bg">
+		<h2>Agenda</h2>
+		<ul>
+			<li>
+				Universal Control Plane
+				<ul>
+					<li>Application management</li>
+					<li>User management</li>
+					<li>Monitoring</li>
+					<li>Security</li>
+					<li>Networking</li>
+					<li>Datacenter architecture</li>
+				</ul>
+			</li>
+			<li>
+				Docker Trusted Registry
+				<ul>
+					<li>Image sharing</li>
+					<li>Content trust</li>
+					<li>Image scanning</li>
+					<li>Image caching</li>
+					<li>Webhooks</li>
+				</ul>
+			</li>
+			<li>...plus other odds and ends.</li>
+		</ul>
+
+		<aside class='notes'>
+			- Docker Datacenter is Docker's answer to the full roster of concerns enterprise customers have when running Docker in production<br>
+			- As such, there is tons to talk about! Everything from user management to security to networking to containers in your CI/CD flow and more <br>
+			- DDC really consists of two components that address all these concerns: a dashboard for managing live applications called Universal Control Plane, and a database for storing, sharing, and securing a library of images called Docker Trusted Registry.
+		</aside>
+	</section>
+
+	<section data-background="#1488c6" class="blue_bg">
+		<h2>Quick Revision - Containers, Images and CS Engine</h2>
+	</section>
+
+	<section data-background="#1488c6" class="blue_bg">
+		<h3>Images</h3>
+		<ul>
+			<li>Read only template used to create containers</li>
+			<li>Built by you or other Docker users</li>
+			<li>Stored in Docker Hub, Docker Trusted Registry or your own Registry</li>
+		</ul>
+
+		<h3>Containers</h3>
+		<ul>
+			<li>Isolated application platform</li>
+			<li>Contains everything needed to run your application</li>
+			<li>Based on one or more images</li>
+		</ul>
+
+		<aside class="notes">
+			 - Who can explain to me what an image is, in their own words? How about a container?<br>
+			 - Image: read only file system<br>
+			 - Container: single process running in an image's file system, isolated from the rest of the host machine by a big pile of security features. 
+		</aside>
+	</section>
+
+	<section data-background="#1488c6" class="blue_bg">
+		<h2>Docker CS Engine</h2>
+
+		<ul>
+			<li>Commercially supported Docker Engine</li>
+			<li>Part of the Docker Datacenter solution</li>
+			<li>Same codebase as open source Docker Engine but in a seperate binary</li>
+			<li>Requires a subscription license</li>
+			<li>Comes with support for current and previous releases</li>
+			<li>Curated set of features, taken from open source Docker Engine</li>
+		</ul>
+
+		<aside class="notes">
+			<ul>
+				<li>Curated set of features, taken from open source Docker Engine - The CS Engine features and releases 
+					are usually slightly behind Open source Engine. However the value of CS Engine is that it is fully supported, including for older Engine
+					versions. This may suit large Enterprise companies who may not necessarily upgrade their Docker Engines as soon as a new version is released.
+				</li>
+			</ul>
+		</aside>
+	</section>	
+</section>
+<section data-background="#254356" class="gray_bg">
+	<section data-background="#254356" class="gray_bg">
+		<h2><img src="src/modules/dops-intro-to-ddc/images/icon_lecture.png" class="slide_icon" alt="icon"> Introduction to Docker Datacenter</h2>
+	</section>
+	
+	<section data-background="#254356" class="gray_bg">
+		<h2>What should Operations know about Docker?</h2>
+		
+		<p>Containers are:</p>
+		<ul>
+			<li class="fragment fade-in">Lightweight (therefore dense)</li>
+			<li class="fragment fade-in">Ephemeral & (ideally) stateless (therefore scalable as Services, monitored in aggregate)</li>
+			<li class="fragment fade-in">Portable (therefore distributable over Swarms)</li>
+			<li class="fragment fade-in">Immutable in production</li>
+		</ul>
+		
+		<aside class="notes">
+			- What are some top-of-mind differences between containers and VMs? Discuss. <br>
+			- Lightweight: containers effectively isolate single processes and filesystems, and don't virtualize entire hardware and OS stacks like a VM. As a result, enterprise ops teams have seen 10x application densification without writing a single line of code, but just by putting their existing monoliths in containers rather than VMs.<br>
+			- Ephemeral: containers are most effective when they are designed to be ephemeral: that is, they don't preserve state (stateful information is best kept in mounted volumes or databases run by specialized containers, which also has implications for backup procedures), and they're fast to start up and shut down. This lends itself to thinking about our applications not as a fixed list of processes, but as a collection of services which can spawn or terminate processes to scale and self-heal our applications. (can anyone explain what a service is?). Also, the combination of the fact that you're going to have a lot of containers coming and going potentially quickly has implications for monitoring; it will usually make more sense to monitor at the per node or per service level, rather than watching an individual container like you might watch an individual VM.<br>
+			- Portable: thanks to Docker's ability to let us run a container reproducibly everywhere from our dev laptops to our CI/CD chain to our deployment servers, another abstraction layer allows us to not worry so much about what particular node a process is running on. And if it doesn't matter what node a container is on, then if a node fails, that same abstraction should be able to allow us to shift our workloads to a healthy machine automatically. This is essentially the Swarm scheduler in action, abstracting away individual nodes in favor of an elastic collection of machines.<br>
+			- Immutable: Unlike a static VM, it doesn't make any sense to ssh into a container to make updates to the software running inside (why?). That container will just go away sooner rather than later, and be replaced with a new one based on the old image - which is read only, meaning changes made to containers in production don't make sense. Instead, the development workflow begins with the developers building a new image which they hand off to ops, who then uses that image to rotate updated containers into production. In this way, it's impossible for legacy cruft to be lurking in a container like it can in a VM that's been spinning through many updates.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Docker Datacenter</h2>
+			
+		<p>Integrated, end-to-end platform for agile application development and management in production</p>
+		<img src="src/modules/dops-intro-to-ddc/images/docker_datacenter.PNG" alt="docker datacenter"/></img>
+
+		<aside class='notes'>
+			- Docker Datacenter is Docker's enterprise grade tooling to help ops teams navigate this new workflow, that emphasizes services, swarms, and a devops mindset for ops and devs to work together more closely and seamlessly by sharing images that work everywhere.<br>
+			- DDC really consists of two parts: Universal Control Plane, which is an easy-to-use UI that sits on the very top of Docker's product offering, and Docker Trusted Registry, which provides a suite of security features on top of an on-prem secure database for storing and sharing your images.<br>
+			- Tools and concepts familiar to enterprise like LDAP integration, role based access control, and content provenance are also wrapped up in DDC, and we'll see all of them over the next couple of days.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Integration: batteries included but swappable</h2>
+		<img src="src/modules/dops-intro-to-ddc/images/docker_datacenter_integration.PNG" alt="docker datacenter integration"/></img>
+
+		<aside class='notes'>
+			- DDC also facilitates integration with external infrastructure, via storage backends allowing you to serve your images from the cloud, volume plugins to distribute persistent data across your infra, swappable CAs for securing communication - all in the spirit of Docker's 'batteries included by swappable' design ethos.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h3>UCP Capabilities</h3>
+		<ul>
+			<li>Management at Scale
+				<ul>
+					<li>GUI management for services, applications, containers, nodes, networks, images, volumes</li>
+					<li>Manage a single Swarm cluster (100s of nodes, 1000s of containers)</li>
+					<li>Monitoring and logging of UCP events</li>
+					<li>Out of the box high availability</li>
+				</ul>
+			</li>
+			<li style="padding-top: 10px;">Enterprise Grade Controls
+				<ul>
+					<li>LDAP/AD integration</li>
+					<li>Role-based access control (RBAC) for teams</li>
+					<li>Push and pull images with DTR</li>
+					<li>Out of the box TLS</li>
+				</ul>
+			</li>
+		</ul>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>UCP Capabilities (cont'd)</h2>
+		<ul>
+			<li>Docker Native Solution
+				<ul>
+					<li>Native support for container orchestration via Swarm Mode</li>
+					<li>Integrated with CS Engine and DTR</li>
+					<li>No change to developer workflow</li>
+					<li>Container health checks</li>
+					<li>Enforcement of signed images for Docker Content Trust</li>
+				</ul>
+			</li>
+		</ul>
+
+		<aside class='notes'>
+			- UCP integrates easily with Engine, which means we get swarm mode orchestration for free - no need to tack on extra tooling to coordinate containers.<br>
+			- DTR integration also lets your developers stick to a familiar workflow by pushing the images they develop to DTR, which can then use its built in webhooks feature to integrate with a CI/CD pipeline.<br>
+			- Also have basic docker-native solutions for things like monitoring and provenance. 
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Deployment with UCP</h2>
+		<ul>
+			<li>Manage Services and containers
+				<ul>
+					<li>Deploy from GUI and set restart policies, environment variables, CPU and memory</li>
+					<li>Start, stop, destroy, rename, scale</li>
+					<li>View container log, stats</li>
+					<li>Login to container from browser</li>
+				</ul>
+			</li>
+			<li style="padding-top: 10px;">Manage Application Stacks & Networks
+				<ul>
+					<li>Deploy Compose v3 apps as 'Stacks'</li>
+					<li>Stack == collection of services & associated assets & configs</li>
+					<li>Full network control</li>
+				</ul>
+			</li>
+		</ul>
+
+		<aside class='notes'>
+			- UCP exposes UI for all aspects of live application management, from deployment to configuration and scaling<br>
+			- UCP also supports the creation of entire apps from docker-compose v3 manifest files, so you can start an app on DDC in the exact same way your developers do on their own machines.<br>
+			- docker-compose manifest also includes all the window dressing around the services themselves, like networks, volumes, replication etc.<br>
+			- also allows for the definition and control of networks, useful for firewalling containers against each other when feasible; just one part of Docker's security strategy.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Docker Datacenter Architecture</h2>
+			
+		<img src="src/modules/dops-intro-to-ddc/images/ddc-architecture-1.12.PNG" alt="ucp architecture"/></img>
+
+		<aside class="notes">
+			- If we have time later, we'll do a deep dive into architecting A DDC deployment, but this is roughly what all this is going to look like in production.<br>
+			- UCP is best deployed replicated across a few managers for high availability; these correspond to the Swarm managers communicating in a Raft consensus, scheduling jobs out to a flexible pool of Swarm workers.<br>
+			- Similarly, your image registry is best replicated for the exact same reasons, and in both cases, a simple external load balancer sits in front of both UCP and DTR management clusters.
+		</aside>
+
+	</section>
+
+	<section data-background="#00a2a1" class="green_bg">
+	    <h2><img src="src/modules/dops-intro-to-ddc/images/icon_task.png" class="slide_icon" alt="icon"> Exercise: Setting up UCP</h2>
+	    <p>Work through the 'Install UCP' exercise in the Docker for Enterprise Operations Exercises book.</p>
+	</section> 
+
+</section>
+
+<section data-background="#254356" class="gray_bg">
+	<section>
+		<h2><img src="src/modules/dops-ucp-architecture/images/icon_lecture.png" class="slide_icon" alt="icon"> Universal Control Plane</h2>
+	</section>
+	
+	<section data-background="#254356" class="gray_bg">
+		<h2>Docker Swarm Mode Review</h2> 
+		<ul>
+			<li>Based on Swarmkit</li>
+			<li>Native Docker orchestration</li>
+			<li>UCP is built on top of Swarm</li>
+		</ul>
+
+		<aside class='notes'>
+			- Before we can understand what's going on under UCP's hood, we need to do a quick review of Docker Swarm Mode, since UCP is really a Swarm at heart.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Swarm Concepts</h2>
+		<h3>Swarms, Nodes, Services & Tasks</h3> 
+
+		<ul>
+			<li class="fragment fade-in"><b>Swarm</b>: a collection of Docker Engines accepting <code>docker container run</code> commands from a scheduler.</li>
+			<li class="fragment fade-in"><b>Node</b>: instance of Engine; either manager or worker.</li>
+			<li class="fragment fade-in"><b>Service</b>: the operational definition of an app (image + config).</li>
+			<li class="fragment fade-in"><b>Task</b>: an instance of our app (container)</li>
+		</ul>
+
+		<aside class='notes'>
+			- [let the class call out definitions to each before revealing them - they should know this stuff already]<br>
+			- Swarm: this is the mechanical definition, but a more notional one is a heterogeneous collection of machines made to operate completely homogeneously. Members of a swarm can be all different shapes and sizes, but Docker makes those distinctions transparent, allowing any container to run on any of them. This abstraction is enormously powerful for ops, because it makes it really simple to consume new compute resources; instead of having to do a lot of install and config on each new machine, new computers can participate in this abstraction seamlessly<br>
+			- Node: nodes are pretty simple - they're any instance of Docker Engine. Note that the whole point of a Swarm is to abstract away the individual nodes; nodes can enter or leave a swarm, run whatever containers they accept from the scheduler, all without changing the operational or design concerns of our apps.<br>
+			- Service: if an image defines the code of your app, a Service is the operational definition of your app; a service is defined by exactly one image, the number of instances you want of that app, and config information like networking, mounted volumes etc.<br>
+			- Task: finally, a task is an instance of our app. Mechanically, it is one container that's been scheduled on our swarm, but it's distinguished from a simple container by the oversight of the scheduler; not only will that container be running in the operational context defined by the service, but if something goes wrong, the scheduler will use Docker's awesome portability to stand that task back up on a healthy node.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Illustration of Swarm Mode</h2>
+		
+		<img src="src/modules/dops-ucp-architecture/images/swarm1.PNG" width="80%"/></img>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Illustration of Swarm Mode (cont'd)</h2>
+		
+		<img src="src/modules/dops-ucp-architecture/images/swarm2.PNG" width="80%"/></img>
+	</section>
+	
+	<section data-background="#254356" class="gray_bg">
+		<h2>Illustration of Swarm Mode (cont'd)</h2>
+		
+		<img src="src/modules/dops-ucp-architecture/images/swarm3.PNG" width="80%"/></img>
+	</section>
+	
+	<section data-background="#254356" class="gray_bg">
+		<h2>Illustration of Swarm Mode (cont'd)</h2>
+		
+		<img src="src/modules/dops-ucp-architecture/images/services.PNG" width="80%"/></img>
+	</section>
+	
+	<section data-background="#254356" class="gray_bg">
+		<h2>Illustration of Swarm Mode (cont'd)</h2>
+		
+		<img src="src/modules/dops-ucp-architecture/images/service-task-container.PNG" width="80%"/></img>
+	</section>
+		
+	<section data-background="#254356" class="gray_bg">
+		<h2>Swarm mode architecture</h2>
+		
+		<img src="src/modules/dops-ucp-architecture/images/swarm-architecture.PNG"/>
+
+		<aside class='notes'>
+			- Your typical swarm looks a bit like this; the little whale symbols are instances of Docker engine, one per machine.<br>
+			- The Swarm consists of an odd number of managers coordinating via a Raft consensus, and any number of workers coordinating via a gossip network<br> 
+			- managers are responsible for scheduling containers on the workers (and managers also count as workers), and replicate scheduling information across them.<br>
+			- workers communicate via a highly performant gossip network that allows them to keep their network tables updated for inter-container packet routing.
+		</aside>
+			
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Multiple manager nodes</h2>
+		<ul>
+			<li>High availability / fault tolerance</li>
+			<li>Performance tradeoff</li>
+			<li>Always odd number</li>
+			<li>Load balancing</li>
+		</ul>
+
+		<aside class='notes'>
+			- In the last slide, we illustrated a typical Swarm with not one but three managers - why?<br>
+			- A group of managers that replicate all services and data needed to manage the Swarm provides fault tolerance to our Swarm; if the manager leader goes down, another can step in to take its place.<br>
+			- HA is a must have, but all that replication is expensive; recommend not more than 7 managers<br>
+			- Any guesses why you always have to have an odd number of managers? The Raft consensus elects a leader by simple majority, and ties lead to split-brain situations; therefore, it's really important to get a manager stood up ASAP when one goes down.
+		</aside>
+
+	</section>
+	
+	<section data-background="#254356" class="gray_bg">
+		<h2>How many managers ? </h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Number of manager nodes</th>
+					<th>Failures tolerated</th>
+					<th>Situation</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>0</td>
+					<td>Dev environment</td>
+				</tr>
+				<tr>
+					<td>3</td>
+					<td>1</td>
+					<td>Small deployment</td>
+				</tr>
+				<tr>
+					<td>5</td>
+					<td>2</td>
+					<td>Small-Medium</td>
+				</tr>
+				<tr>
+					<td>7</td>
+					<td>3</td>
+					<td>Medium-Large</td>
+				</tr>
+				<tr>
+					<td>N</td>
+					<td>(N-1) / 2 </td>
+				</tr>
+			</tbody>
+		</table>
+
+		<ul>
+			<li><b>Note: </b>Having a 3 manager node setup does not provide true failover</li>
+		</ul>
+
+		<aside class="notes">
+			<b>Instructor notes:</b>
+			<ul>
+				<li>When you have 3 nodes, only 1 failure is tolerated because if you have 1 failure you end up with 2 managers, which is bad because with this even number there is a fair chance of disagreement between the managers, which will cause problems when you try to perform any operation in the cluster. So with a 3 manager node cluster, you don't have a true failover setup. If one node fails, your cluster will still be alive and applications will still be running, but your ability to perform any operation will be limited </li>
+				<li>When there's 5 managers, if one fails you have 4. Even though this is an even number, the changes of a 2-2 disagreement is much lower than when you have 2 managers and they split their vote 1-1. </li>
+			</ul>
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">		
+		<h2>Load balancing example </h2>
+
+		<div class='half_container_one' style='width:73% !important'>
+			<img src="src/modules/dops-ucp-architecture/images/manager_load_balancing.PNG"/>
+		</div>
+		<div class='half_container_two' style='width:23% !important'>
+			<ul>
+				<li>Balance ports 80 and 443</li>
+				<li>Don't terminate HTTPS</li>
+				<li>Use<code>/_ping</code> endpoint for health check</li>
+			</ul>
+		</div>
+
+		<aside class='notes'>
+			- With a Raft of managers, we need to put a load balancer in front of the group.<br>
+			- Tips: balance on 80 and 443; don't terminate HTTPS in order to allow for mutual TLS; `/_ping` endpoint reports if a manager is healthy and can stay in the balancing pool.
+		</aside>
+	</section>
+		
+	<section data-background="#254356" class="gray_bg">
+		<h2>UCP is a Swarm</h2>
+		
+		<ul>
+			<li>UCP sits on top of a Swarm</li>
+			<li>Adds UI, RBAC, registry integration...</li>
+			<li>Start with one UCP manager == Swarm manager leader</li>
+			<li>New UCP nodes joined exactly as new Swarm nodes joined</li>
+		</ul>
+
+		<aside class='notes'>
+			- UCP is essentially a UI and some enterprise features sitting on top of a Swarm; the core of UCP is really just a Swarm.<br>
+			- The first UCP node you installed initiated a Swarm as its manager / leader; subsequent UCP nodes were joined exactly as you'd join a Swarm.
+		</aside>
+	</section>
+
+	<section data-background="#00a2a1" class="green_bg">
+	    <h2><img src="src/modules/dops-ucp-architecture/images/icon_task.png" class="slide_icon" alt="icon"> Exercise: UCP High Availability</h2>
+	    <p>Work through the 'Adding UCP Manager Nodes' exercise in the Docker for Enterprise Operations Exercises book.</p>
+	</section> 
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>UCP application components</h2>
+		<ul>
+			<li>Extensions to Swarm provided by a collection of containers </li>
+			<li>Core component: global service <code>ucp-agent</code></li>
+			<li><code>ucp-agent</code> deploys and keep-alive all other UCP containers</li>
+		</ul>
+
+		<aside class='notes'>
+			- All the goodness that UCP provides in addition to a plain old Swarm is provided by a collection of containers running on the Swarm itself.<br>
+			- The core component is a global service called `ucp-agent` that keeps the rest of UCP up and healthy. (can anyone remind us what a global service is?)
+		</aside>
+	</section>						
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Manager node containers</h2>
+		<ul>
+			<li><b><code>ucp-controller</code></b> - The UCP web server</li>
+			<li><b><code>ucp-auth-api</code></b> - The centralized service for identity and authentication used by UCP and DTR</li>
+			<li><b><code>ucp-auth-store</code></b> - Stores authentication configurations, and data for users, organizations and teams</li>
+			<li><b><code>ucp-auth-worker</code></b> - Performs scheduled LDAP synchronizations and cleans authentication and authorization data</li>
+			<li><b><code>ucp-client-root-ca</code></b> - A certificate authority to sign client bundles</li>
+			<li><b><code>ucp-cluster-root-ca</code></b> - A certificate authority used for TLS communication between UCP components</li>
+			<li><b><code>ucp-kv</code></b> - etcd service used to store the UCP configurations</li>
+			<li><b><code>ucp-proxy</code></b> - A TLS proxy. It allows secure access to the local Docker Engine to UCP components</li>
+			<li><b><code>ucp-swarm-manager</code></b> - Manager container for Docker Swarm (classic). Provides backwards compatability</li>
+		</ul>
+
+		<aside class="notes">
+			 - Nodes added or promoted to UCP manager status will have all these running on them to supply UCP functionality.<br>
+			 - UCP is reachable from the IP of any manager node; typically load balance across these.<br>
+			 - Cluster status is stored in the Internal distributed state store and replicated across the manager nodes<br>
+			 - ucp-agent is responsible for deploying all these on node promotion from worker to manager<br>
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>UCP volumes</h2>
+		<p>Named volumes used to persist data:</p> 
+		<ul>
+			<li><b><code>ucp-auth-api-certs</code></b> - Certificate and keys for the authentication and authorization service</li>
+			<li><b><code>ucp-auth-store-certs</code></b> - Certificate and keys for the authentication and authorization store</li>
+			<li><b><code>ucp-auth-store-data</code></b> - Data of the authentication and authorization store</li>
+			<li><b><code>ucp-auth-worker-certs</code></b> - Certificate and keys for authentication worker</li>
+			<li><b><code>ucp-auth-worker-data</code></b> - Data of the authentication worker</li>
+			<li><b><code>ucp-client-root-ca</code></b> - Root key material for the UCP root CA that issues client certificates</li>
+			<li><b><code>ucp-cluster-root-ca</code></b> - Root key material for the UCP root CA that issues certificates for swarm members</li>
+
+		</ul>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>UCP volumes (cont'd)</h2>
+		<ul>
+			<li><b><code>ucp-controller-client-certs</code></b> - Certificate and keys used by the UCP web server to communicate with other UCP components</li>
+			<li><b><code>ucp-controller-server-certs</code></b> - Certificate and keys for the UCP web server running in the node</li>
+			<li><b><code>ucp-kv</code></b> - UCP configuration data</li>
+			<li><b><code>ucp-kv-certs</code></b> - Certificates and keys for the key-value store</li>
+			<li><b><code>ucp-node-certs</code></b> - Certificate and keys for node communication</li>
+		</ul>
+	</section>
+
+</section>
+
+<section data-background="#254356" class="gray_bg">
+	<section>
+		<h2><img src="src/modules/dops-ucp-networking/images/icon_lecture.png" class="slide_icon" alt="icon"> Networking in UCP</h2>
+
+		<aside class='notes'>
+			In order to understand netowrking in UDP, we need to do a very quick tour of Docker networking in general.
+		</aside>
+	</section>
+	
+	<section data-background="#254356" class="gray_bg">
+		<h2>Single-Node Networks</h2>
+
+		<div class="half_container_one">
+			<img src="src/modules/dops-ucp-networking/images/bridge2.png"></img>
+		</div>
+		
+		<div class="half_container_two" style="text-align: right;">
+			<ul>
+				<li>Bridge network</li>
+				<li>containers communicate via linux bridge (MAC / L2)</li>
+			</ul>
+		</div>
+
+		<aside class='notes'>
+			- The simplest container networking is on a single host. Containers address packets via MAC address, which get routed to the correct place by a linux bridge.<br>
+			- This is fine for an app on a single node, but in order to deliver on Swarm's promise of abstracting away the difference between nodes, containers on different nodes must be able to communicate with each other.<br>
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Overlay Networks</h2>
+		
+		<div class="half_container_one">
+			<img src="src/modules/dops-ucp-networking/images/packetwalk-nigel.png"></img>
+		</div>
+		
+		<div class="half_container_two" style="text-align: right;">
+			<ul>
+				<li>Inter-node communication facilitated by Overlay Networks</li>
+				<li>VXLAN wraps L2 packet in L3 (network) IP/UDP header</li>
+			</ul>
+		</div>
+
+		<aside class='notes'>
+			- In order to allow L2 packets to traverse the network, Docker wraps them with an L3 network header.<br>
+			- The Swarm gossip network mentioned previously propagates container state and address info across the cluster, so each node can determine the correct network header to wrap an outbound packet in.  
+		</aside>
+		
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Swarm Routing Mesh</h2>
+		
+		<div class="half_container_one">
+			<img src="src/modules/dops-ucp-networking/images/routing-mesh.png"></img>
+			<pre>
+docker service create --name app --replicas 2 \
+--network appnet -p 8000:80 nginx
+			</pre>
+		</div>
+		
+		<div class="half_container_two" style="text-align: right;">
+			<ul>
+				<li class="fragment fade-in">Every node listens on port 8000</li>
+				<li class="fragment fade-in">Doesn't matter if host is running a task for the service.</li>
+				<li class="fragment fade-in">Ingress overlay forwards traffic to the appropriate service's virtual IP</li>
+				<li class="fragment fade-in">Built in IPVS load balancing (ie L4 transport layer LB)</li>
+				<li class="fragment fade-in">Traffic rerouted across Ingress network</li>
+				<li class="fragment fade-in">All containers for an exposed service are attached to the Ingress network</li>
+			</ul>
+		</div>
+
+		<aside class='notes'>
+			- One of the features enabled by overlay networks for any Swarm is the Routing Mesh.<br>
+			- Services can be defined to expose a port inside their containers on a host port, reachable by the external network.<br>
+            - In this case, we have nginx listening on port 8000, routing all traffic there to port 80 inside the nginx container.<br>
+            - But there's a problem: what if there's more than one nginx container? Which one should the traffic get routed to?<br>
+            - And another problem: If these containers are as ephemeral as we promised, do we really want the external load balancer to have to keep up with the changing destination for this mapping?<br>
+            - One solution to this problem is to remember that while containers are transient, services persist. We'd like our load balancer to only have to be aware of the existance of a service, and leave navigating the details of the Swarm up to Docker. This is exactly the Routing Mesh.<br>
+            - Every host listens on the exposed port - doesn't matter if the host is running a container for that service.<br>
+            - When traffic is received, the Ingress overlay network wraps the traffic in a VIP header, and forwards it to the IPVS on the same node.<br>
+            - The IPVS then does standard L4 load balancing, sending the traffic back out across Ingress to arrive at a node with a healthy container for the service in question.<br>
+            - Note that to facilitate this, all nodes must participate in ingress, and all containers from an exposed service are attached to ingress.
+		</aside>
+	</section>
+	
+	<section data-background="#254356" class="gray_bg">
+		<h2>Swarm Routing Mesh Demo</h2>
+		
+		<ul>
+			<li>Launch an nginx service</li>
+			<li>Expose port 80 in the container on port 8000 of every Swarm host</li>
+			<li>Check the <i>Published Ports</i> section in your service details to see exposed ports.</li>
+		</ul>
+		
+		<img src="src/modules/dops-ucp-networking/images/published_ports.PNG"></img>
+
+		<aside class='notes'>
+			- [Actually do this demo; point out the UI that corresponds to each of the listed steps]
+		</aside>
+	</section>
+		
+	<section data-background="#254356" class="gray_bg">
+		<h2>Network Scope</h2>
+		
+		<ul>
+			<li>Overlay networks created in Swarm mode are only available to Swarm services</li>
+			<li>This is indicated by looking at the network scope on the <code>docker network ls</code> command or the <b>Networks</b> page in UCP</li>
+		</ul>
+		
+		<pre>
+ubuntu@ucp-controller:~$ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+0b981327ecc6        bridge              bridge              local
+23d551207c9f        docker_gwbridge     bridge              local
+bfb143bdb15b        host                host                local
+8ebch86hnyfi        ingress             overlay             swarm
+3fkq8rc4f6ol        my_app              overlay             swarm
+93d908ff61e9        none                null                local
+		</pre>
+	</section>
+
+	<section data-background="#00a2a1" class="green_bg">
+	    <h2><img src="src/modules/dops-ucp-networking/images/icon_task.png" class="slide_icon" alt="icon"> Exercise: Load Balancing & Multi Service Apps</h2>
+	    <p>Work through the 'Ingress Load Balancing' and 'Deploy an Application' exercises in the Docker for Enterprise Operations Exercises book.</p>
+	</section> 
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>HTTP Routing Mesh (HRM)</h2>
+		<ul>
+			<li>L4 routing requires LB be aware of each service</li>
+			<li>Application layer (L7) load balancing avoids this</li>
+			<li>Route traffic to services based on header information</li>
+		</ul>
+		
+		<aside class="notes">
+			- Our goal with the swarm routing mesh was essentially to let our external load balancer be as dumb as possible; all it has to know about are what port each exposed service is available on.<br>
+			- But what if this is still not dumb enough? The HTTP Routing Mesh allows our external load balancer to be completely ignorant of the guts of our application, by load balancing all traffic across a single swarm port (80). Traffic is then load balanced at L7, by a service that can inspect the traffic's header and route it accordingly.
+		</aside>
+
+	</section>
+	
+	<section data-background="#254356" class="gray_bg">
+		<h2>HRM Receipt</h2>
+		
+
+		<div class="half_container_one">
+			<img src="src/modules/dops-ucp-networking/images/ucp-hrm.PNG"></img>
+		</div>
+		
+		<div class="half_container_two" style="text-align: right;">
+			<ul>
+				<li>ucp-hrm is a service exposed on the Swarm Routing Mesh</li>
+				<li>Traffic to all exposed services comes in on port 80</li>
+			</ul>
+		</div>
+		
+	
+		<aside class="notes">
+			- The traffic comes in from the external load balancer into the swarm mode routing mesh.<br>
+			- The HRM service was configured on port 80, so any request to port 80 on the UCP cluster will go to the HRM service.<br>
+			- All services attached to the ucp-hrm network can utilize the HRM to have traffic routed based on their HTTP Host: header.<br>
+		</aside>
+		
+	</section>
+	
+	<section data-background="#254356" class="gray_bg">
+		<h2>HRM Routing</h2>
+		
+		<div class="half_container_one" style="width:75% !important">
+			<img src="src/modules/dops-ucp-networking/images/ucp-hrm-detailed.PNG"></img>
+		</div>
+		
+		<div class="half_container_two" style="width:23% !important">
+			<ul>
+				<li class="fragment fade-in">ucp-hrm peeks inside at the HTTP header's host value</li>
+				<li class="fragment fade-in">VIP of service assigned if service label 'com.docker.ucp.mesh.http' matches 'HTTP Host:' header</li>
+				<li class="fragment fade-in">ucp-hrm overlay and IPVS load balance based on VIP as usual</li>
+			</ul>
+		</div>
+
+		
+		
+		<aside class="notes">
+			- Once traffic has arrived at the ucp-hrm service, it examines the value of the HTTP Host: header, and looks for a match with the value of any service label com.docker.ucp.mesh.http.<br>
+			- When a match is found, the traffic is forwarded across the ucp-hrm overlay network with the matching service's VIP applied, and load balancing proceeds as normal.<br>
+			- In some sense this is L4 load balancing dressed up as L7 LB.
+		</aside>
+	</section>
+	
+	<section data-background="#254356" class="gray_bg">
+		<h2>Enabling HRM</h2>
+		
+		<ul>
+			<li>Must be enabled in Admin settings</li>
+			<li>Choose a HTTP and HTTPS port for the HRM service to listen on</li>
+			<li>Once enabled a network called <code>ucp-hrm</code> is created.</li>
+		</ul>
+	</section>
+	
+	<section data-background="#00a2a1" class="green_bg">
+	    <h2><img src="src/modules/dops-ucp-networking/images/icon_task.png" class="slide_icon" alt="icon"> Exercise - HRM</h2>
+		<p>Work through the HTTP Routing Mesh exercise in the Docker for Enterprise Operations exercises book</p>
+	</section>
+	
+	<section data-background="#254356" class="gray_bg">
+		<h2>HRM in Compose</h2>
+		
+		<pre>
+		
+version: '3'
+services:
+  web:
+	image: chrch/web:1.0
+	deploy:
+	  mode: replicated
+	  replicas: 2
+	  labels:
+		com.docker.ucp.mesh.http: "external_route=http://pets.dckr.org,internal_port=5000"
+	  ports:
+		- 5000
+	  environment:
+		DB: 'db'
+	  networks:
+		- petnet
+		- ucp-hrm
+		
+		</pre>
+	</section>
+
+</section>
+
+<section data-background="#254356" class="gray_bg">
+
+	<section data-background="#254356" class="gray_bg">
+		<h2><img src="src/modules/dops-user-management/images/icon_lecture.png" class="slide_icon" alt="icon"> UCP User management</h2>
+	</section>
+
+
+	<section data-background="#254356" class="gray_bg">
+
+		<h2>User management overview</h2> 
+		<ul>
+			<li>Managed (directly in UCP)</li>
+			<li>Discovered (from external LDAP / AD)</li>
+			<li>Users are organized into teams</li>
+			<li>Resources bear admin-defined labels</li>
+			<li>Teams are given R/W permissions per label</li>
+			<li>UCP and DTR share a common user base</li>
+		</ul>
+		
+		<img src="src/modules/dops-user-management/images/DEOPS-ucp_user_management.PNG"/>
+
+	</section>
+
+
+	<section data-background="#254356" class="gray_bg">
+		<div class="half_container_one">
+			<h2>Creating a user</h2> 
+			<ul>
+				<li>Two levels of authorization</li>
+				<ul>
+					<li>Admin</li>
+					<li>Non admin</li>
+				</ul>
+				<li style="margin-top: 10px;">Default permissions control access to Services, Images, Networks and Volumes</li>
+			</ul>
+		</div>
+		
+		<div class="half_container_two" style="text-align: right;"><img src="src/modules/dops-user-management/images/UCP-create_user_form.PNG" alt="create a user"></div>
+
+		<aside class='notes'>
+			[Demo this]
+		</aside>
+	</section>
+
+
+	<section data-background="#254356" class="gray_bg">
+		<div class="half_container_one">
+			<h2>Creating a team</h2> 
+			<ul>
+				<li>Created in UCP or synced from LDAP</li>
+				<li>Users can belong in multiple teams</li>
+			</ul>
+		</div>
+		
+		<div class="half_container_two" style="text-align: right;"><img src="src/modules/dops-user-management/images/UCP-create_team.PNG" alt="create a user"></div>
+
+		<aside class='notes'>
+			[Demo this too]
+		</aside>
+	</section>
+	
+	<section data-background="#254356" class="gray_bg">
+		<h2>LDAP integration</h2>
+		
+		<ul>
+			<li>Delegate authentication to an LDAP server</li>
+			<li>User accounts will be synced from LDAP based on a LDAP search configuration</li>
+			<li>Existing accounts setup in UCP will be disabled except for one recovery admin account</li>
+			<li>Recovery admin account allows for UCP admin access in case of a problem with the LDAP server</li>
+			<li>Once enabled, users cannot change their password in UCP</li>
+		</ul>
+
+		<aside class='notes'>
+			- If you prefer to work with an LDAP server, UCP can integrate with this<br>
+			- Be aware that the LDAP users and teams will supercede any users and teams defined in UCP.
+		</aside>
+	</section>
+
+	<section data-background="#00a2a1" class="green_bg">
+		<h2><img src="src/modules/dops-user-management/images/icon_task.png" class="slide_icon" alt="icon"> Exercise: Users & Teams with UCP</h2>
+			
+		<p>Work through the 'Create Users and Teams' and 'Testing User Access' exercises in the Docker for Enterprise Operations Exercises book.</p>
+	</section>
+
+</section>
+<section data-background="#254356" class="gray_bg">
+
+	<section data-background="#254356" class="gray_bg">
+		<h2><img src="src/modules/dops-ucp-access-control/images/icon_lecture.png" class="slide_icon" alt="icon"> UCP access control</h2>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>User default permissions</h2> 
+		<ul>
+			<li>Applies to volumes, images, networks, containers and secrets</li>
+			<li style="margin-top: 10px;">Four possible permissions:</li>
+			<ul>
+				<li>No access</li>
+				<li>View only</li>
+				<li>Restricted control</li>
+				<li>Full control</li>
+			</ul>
+			<li style="margin-top: 10px;">Further role based access control (RBAC) to containers via team permissions</li>
+		</ul>
+
+		<aside class='notes'>
+			- Access control comes in two levels: default permission defined per user, and role-based access control defined per resource and team.
+		</aside>
+	</section>    
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Role based access control</h2> 
+		<ul>
+			<li>Labels can be applied to any resource</li>
+			<li>Admin defines a team's permission to R/W all assets with a given label</li>
+			<li>User actions constratined by the permissions of their team(s)</li>
+			<li style="margin-top: 10px;">Four possible permissions:</li>
+			<ul>
+				<li>No access</li>
+				<li>View only</li>
+				<li>Restricted control</li>
+				<li>Full control</li>
+			</ul>
+		</ul>
+
+		<aside class='notes'>
+			- Permission can be controled to arbitrary granularity through the intersection of labels and teams.<br>
+			- Labels are applied to assets, members of teams can R/W those assets in accordance with the permission defined for the team for that label.<br>
+		</aside>
+	</section> 
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Adding a label</h2> 
+		<img src="src/modules/dops-ucp-access-control/images/add_label.png" alt="add label" style="width: 966px !important; max-width: 100%;">
+
+		<aside class='notes'>
+			[demo]
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Deploying services with labels</h2> 
+		<div class="half_container_one">
+			<p>Service labels work the same as any other, with a few gotchas:</p>
+		</div>
+		
+		<div class="half_container_two" style="text-align: right;"><img src="src/modules/dops-ucp-access-control/images/UCP-service-permission-labels.png"></div>
+		
+		<ul>
+			<li class="fragment fade-in">Users can only choose labels mapped to the "Restricted Access" or "Full Control" permission</li>
+			<li class="fragment fade-in">Containers can be deployed without a label if the user's default permission is "Restricted Access" or "Full Control"
+				<ul>
+					<li>Container will only be visible to the user who deployed it</li>
+				</ul>
+			</li>
+		</ul>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Team permissions</h2>
+		<ul>
+			<li>Different teams can have the same labels in their permissions</li>
+			<li style="margin-top: 10px;"><strong>Example</strong></li>
+			<ul>
+				<li>"Engineering" team has "production" label mapped to "View Only" permission</li>
+				<li>"Ops" team has "production" label mapped to "Full Control" permission</li>
+			</ul>
+		</ul>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Restricted control</h2>
+		<ul>
+			<li>Similar to Full control but with a few key restrictions</li>
+			<li>Allows users to create, restart, kill or remove containers</li>
+			<li>Does not give permission to <code>docker container exec</code> into a container</li>
+			<li style="margin-top: 10px;">Also prevents running:</li>
+			<ul>
+				<li>Privileged containers</li>
+				<li>Host mounted volumes</li>
+			</ul>
+		</ul>
+
+		<aside class='notes'>
+			- No access, view only and full control permissions do what they sound like they do; Restricted Control is more obscure.<br>
+			- Essentially full control with training wheels - disallows bad security practices like exec'ing into running containers, or running in privileged mode.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Admin users</h2>
+		<ul>
+			<li>Are authorized to access all Docker objects in UCP</li>
+			<li>Access either through GUI or client bundle</li>
+		</ul>
+		<img src="src/modules/dops-ucp-access-control/images/admin_users_2.png" width="80%" alt="admin user">
+	</section>
+
+	<section data-background="#00a2a1" class="green_bg">
+	    <h2><img src="src/modules/dops-ucp-access-control/images/icon_task.png" class="slide_icon" alt="icon"> Exercise: User Management</h2>
+	    <p>Work through the 'Advanced User Management', 'User Management with LDAP', 'Password Recovery', and 'Troubleshooting User Access Scenarios' exercises in the Docker for Enterprise Operations Exercises book.</p>
+	</section> 
+
+</section>
+<section>
+    <section data-background="#254356" class="gray_bg">
+        <h2><img src="src/modules/dops-secrets/images/icon_lecture.png" class="slide_icon" alt="icon"> Secrets in UCP</h2>
+        <aside class='notes'>
+            <p>Docker Engine 1.13 supports Secrets. </p>
+            <p>Secrets are easy to use in UCP with features such as management, authorization, rotation and auditing.</p>
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>What is a Secret?</h2>
+
+        <img src='src/modules/dops-secrets/images/secret_passwd.png'></img>
+
+        <aside class='notes'>
+            <ul>
+                <li>Easy comparison: Passwords are used to manage user access, Secrets are used to manage Service access.</li>
+                <li>Secrets can be used to enable secure API handshakes and encrypted communication.</li>
+                <li>Assign secrets to services when services need to connect to other services.</li>
+            </ul>
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Motivation for secrets</h2>
+
+        <p> Challenges in distributed systems:</p>
+        <ul>
+            <li>Secrets can be embed in source code in github</li>
+            <li>Secrets can be distributed to other nodes in Container orchestration systems</li>
+            <li>Secrets could be tampered with in transit</li>
+        </ul>
+
+        <aside class='notes'>
+            When working with a distributed system, code and images end up being circulated across a large number of nodes and registries; we want a robust way of ensuring sensitive information never ends up somewhere it shouldn't.
+            <p> Common Issues:</p>
+            <ul>
+                <li>Secrets could be tampered with in transit and/or land on untrusted nodes</li>
+                <li>Developers embed secrets in source code in Github for all IT to see</li>
+                <li>Container orchestration systems do not support multiple apps in the same cluster</li>
+                <li>Any app can see any other app’s secret and/or modify it</li>
+                <li>Operations cobbled together incomplete solutions</li>
+            </ul>
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Secrets Use Case</h2>
+        <p>Manage services with sensitive information in Docker Swarm such as:</p>
+        <ul>
+            <li>passwords</li>
+            <li>TLS certificates</li>
+            <li>private keys</li>
+            <li>and more...</li>
+        </ul>
+
+        <img src='src/modules/dops-secrets/images/secerts_management.png' width="400"></img>
+
+        <aside class='notes'>
+            - Docker Secrets are a Docker native way to manage resources like these in a distributed application.<br>
+            - They are a Swarmkit feature, and therefore only available when running a Swarm, either directly from the CLI or with UCP sitting on top.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Secrets Workflow 1: Creation & Storage</h2>
+
+        <div class='half_container_one'>
+            <img src='src/modules/dops-secrets/images/secret_arch1.png'></img>
+        </div>
+
+        <div class='half_container_two'>
+            <ul>
+                <li class="fragment fade-in">Transmitted over mutual TLS</li>
+                <li class="fragment fade-in">Encrypted at rest (1.13+)</li>
+                <li class="fragment fade-in">Part of the Raft datastore (therefore HA)</li>
+            </ul>
+        </div>
+
+        <aside class='notes'>
+            - When creating a secret either at the command line or through UCP, it is communicated over a mutual TLS encrypted connection, and immediately encrypted and parked in the Raft database; that way, the secret is never exposed during creation or when at rest, and enjoys the same high availability as the rest of the Swarm management information.<br>
+            - Only managers and all managers have access to the complete collection of secrets at rest.<br>
+            - Warning: Raft data is encrypted at rest only as of Docker Engine 1.13; if an older engine joins the manager consensus, they will replicate the secrets information unencrypted. Therefore, please ensure you are using Engine 1.13+ when using Secrets.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Secrets Workflow 2: Distribution</h2>
+
+        <div class='half_container_one'>
+            <img src='src/modules/dops-secrets/images/secret_arch2.png'></img>
+        </div>
+
+        <div class='half_container_two'>
+            <ul>
+                <li class="fragment fade-in">Secret access is per service</li>
+                <li class="fragment fade-in">Managers propagate secrets (TLS) to only the containers that need them ("Least Privilege")</li>
+                <li class="fragment fade-in">tmpfs-mounted unencrypted in container at <code>/run/secrets/&lt;secret_name&gt;</code></li>
+                <li class="fragment fade-in">Deleted when service loses access to a secret</li>
+            </ul>
+        </div>
+
+        <aside class='notes'>
+            - Secret distribution is per service. When a service gains access to a secret, the secret is propagated by mutual TLS to every task running for that service; note this is initiated by the Swarm manager - there is no concept of a worker requesting a secret from the Raft consensus.<br>
+            - Upon receipt, secrets are stored unencrypted in a temporary file system mount in containers at `/run/secres/secret_name`.<br>
+            - In this way, secrets are always protected until they land at their destination container.<br>
+            - If a service loses access to a secret, the Swarm managers demand all running containers for that service delete the secret.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Secrets Workflow 3: Secret Usage</h2>
+
+        <img src='src/modules/dops-secrets/images/secret_arch3.png'></img>
+
+        <aside class='notes'>
+            - At this point, the secret is just sitting unencrypted in the correct containers' filesystems, available to be used at will by any process running in that container.<br>
+            - Note that this also means Docker native secrets are backwards compatible with preexisting services; containers and code don't have to be aware of the secrets mechanism - they just have to read an unencrypted file sitting on their disk.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>UCP Secret Features</h2>
+
+        <ul>
+            <li>Management
+                <ul>
+                    <li>Admins can add/remove/list/update secrets in the cluster</li>
+                    <li>Exposed to a container via a ”/secrets” tmpfs volume</li>
+                </ul>
+            </li>
+
+            <li>Authorization
+                <ul>
+                    <li>Attach secrets to a specific service</li>
+                    <li>Admins can authorize secrets access to users/teams via RBAC labels</li>
+                </ul>
+            </li>
+
+            <li>Rotation
+                <ul>
+                    <li>Use UCP GUI to update a secret to all containers in a service</li>
+                </ul>
+            </li>
+
+            <li>Auditing
+                <ul>
+                    <li>User requests from UCP for secret access logged in cluster for auditing</li>
+                    <li>(Try <code>docker container logs ucp-controller 2>&1 | grep 'secrets.list'</code> on a UCP manager node)</li>
+                </ul>
+            </li>
+        </ul>
+
+        <aside class='notes'>
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Create Secrets in UCP Web UI</h2>
+
+        <img src='src/modules/dops-secrets/images/create_secrets.png' width="800"></img>
+
+        <aside class='notes'>
+            [demo this]
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Label based access control</h2>
+
+        <img src='src/modules/dops-secrets/images/use_secrets.png' width="800"></img>
+
+        <p>A Service must share an access control label with a Secret in order to use it.</p>
+
+        <aside class='notes'>
+            <ul>
+                <li>Provides granular label-based access control similar to services and networks for Secrets</li>
+                <li>To use a secret with a service, they must both have the same access control label (e.g. “com.docker.ucp.access.label=production”, or they must both have no access control label.</li>
+                <li>That way, a user authorized to launch a service can't inadvertently use a secret her team is not authorized to touch.</li>
+            </ul>
+        </aside>
+    </section>
+
+    <section data-background="#00a2a1" class="green_bg">
+        <h2><img src="src/modules/dops-secrets/images/icon_task.png" class="slide_icon" alt="icon"> Exercise: Secret Management</h2>
+        <p>Work through the 'Secret Management' exercise in the Docker for Enterprise Operations Exercise book.</p>
+    </section> 
+</section><section>
+    <section data-background="#254356" class="gray_bg">
+        <h2><img src="src/modules/dops-monitoring-and-recovery-of-ucp-and-applications/images/icon_lecture.png" class="slide_icon" alt="icon"> Application Monitoring and Recovery</h2>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Dashboard statistics</h2>
+
+        <img src="src/modules/dops-monitoring-and-recovery-of-ucp-and-applications/images/dashboard.png"/>
+
+        <aside class='notes'>
+            - UCP surfaces cluster-wide statistics via its landing page dashboard. [demo a live dashboard]<br>
+            - Stats are broken out two ways: by Docker abstractions like services, containers and nodes; and by hardware statistics, like memory and CPU usage.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Node Statistics</h2>
+
+        <img src='src/modules/dops-monitoring-and-recovery-of-ucp-and-applications/images/cpu-usage.png' style='width:80%;'></img>
+
+        <p>Resources -> Nodes presents a list of nodes; click on each to see charts of resource usage.</p>
+
+        <aside class='notes'>
+            - [actually demo this]<br>
+            - Clicking through to Resources -> Nodes reveals a list of nodes participating in the swarm<br>
+            - Clicking the column names in the node list to sort by resource usage<br>
+            - Click on the node row to drill down into more detailed node statistics; especially see the Stats tab for graphs of CPU, memory and disk usage from the last 20 minutes.
+        </aside>
+    </section>    
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Container Statistics</h2> 
+        <img src="src/modules/dops-monitoring-and-recovery-of-ucp-and-applications/images/container_logs_2.png" alt="add label" style="style='width:80%;'">
+
+        <p>Resources -> Containers presents a list of containers; click on each to see logs and resource usage.</p>
+
+        <aside class='notes'>
+            - [Actually demo this]<br>
+            - Similarly to nodes, we can drill down to separate containers.<br>
+            - The Logs tab shows the logs for our container; the stats tab is a bit different, as it only displays data accrued live while watching the charts.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Monitoring UCP</h2>
+        <ul>
+            <li>Error message can often be found on the <code>ucp-controller</code> container log</li>
+            <li>Log level can be configured and messages can be sent to syslog server</li>
+        </ul>
+        <img src="src/modules/dops-monitoring-and-recovery-of-ucp-and-applications/images/logging_config.PNG" alt="monitoring ucp">
+
+        <aside class='notes'>
+            demo:<br>
+            - Resources -> Containers page: system containers hidden by default, click on Filter dropdown -> System Containers to reveal<br>
+            - Click on 'ucp-controller' container to navigate to logs<br>
+            - Admin Settings -> Logs to control UCP logging options and syslog server.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Monitoring Future</h2>
+
+        <ul>
+            <li class="fragment fade-in">Prometheus backend; aggregates per-container stats</li>
+            <li class="fragment fade-in">Per service view?</li>
+            <li class="fragment fade-in">Always going to be lightweight</li>
+            <li class="fragment fade-in">Suggestions welcome! training@docker.com</li>
+        </ul>
+
+        <aside class='notes'>
+            - UCP's monitoring features are all fairly new, and active development is underway.<br>
+            - Under the hood, we have Prometheus collecting per-container stats and aggregating them for the per-node and swarm-wide stats.<br>
+            - Never intended to completely replace a third party monitoring tool; more meant to reduce friction for simple, first-responder type monitoring.<br>
+            - Docker is happily accepting suggestions for the future of native monitoring - get in touch with the training team, or anyone else you're working with at Docker.
+        </aside>
+
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>On Node failure - Services</h2>
+        <ul>
+            <li>Services are self healing</li>
+            <li>Swarm reschedules failed containers on healthy nodes</li>
+            <li>Failed nodes should be replaced or restarted ASAP</li>
+            <li>Recovered nodes will not have old workloads moved back to them (will accept new workloads instead)</li>
+        </ul>
+
+        <aside class='notes'>
+            - One of the great things about the abstraction of a service, is the ability to be self healing in the face of container and node loss. If a container fails for any reason, the scheduler will reschedule it on an appropriate healthy node automatically, making best-effort to re-assert the desired state of your service.<br>
+            - In the event of node failure, it is of course important to restore the failed node ASAP; workloads will have been automatically migrated off the failed node, but depending on the occupancy of the rest of your cluster, this increased density may hurt performance.<br>
+            - Note that recovering a node will not result in its old workloads automatically moving back to it; the whole idea of a swarm is that it doesn't (much) matter which node a process runs on, so there's no reason to force the (essentially arbitrary) collection of original containers back onto their previous host. A restarted host will be treated just like a new member of the swarm: waiting to accept new tasks commensurate with any relevant engine label constraints.
+        </aside>
+    </section>
+
+    <!--section data-background="#254356" class="gray_bg">
+        <h2>On Node failure for legacy applications</h2>
+        <ul>
+            <li>All containers on a failed node stop running</li>
+            <li>Unless configured, containers will not be rescheduled to other nodes in the cluster</li>
+            <li>Try to restart the node</li>
+            <li style="margin-top: 10px;">On Node restart, containers that were previously running need to be manually restarted</li>
+            <ul>
+                <li>Can set restart policy on containers</li>
+            </ul>
+        </ul>
+    </section-->
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Common Problems</h2>
+        <p><b>UCP Backups</b></p>
+
+        <ul>
+            <li class="fragment fade-in">Backup UCP manager nodes!</li>
+            <li class="fragment fade-in"><code>docker/ucp</code> image provides <code>backup</code> and <code>restore</code> commands</li>
+            <li class="fragment fade-in">DO NOT attempt to delete all containers and volumes to start over!</li>
+            <li class="fragment fade-in">Backup tutorial: <a href='http://dockr.ly/2mDaSn6'>http://dockr.ly/2mDaSn6</a></li>
+        </ul>
+
+        <aside class='notes'>
+            - For the rest of this section, we want to show you a short rouges gallery of common problems when setting up UCP.<br>
+            - Above all: please please back up your ucp manager nodes. Recall that all persistent data for a UCP cluster lives on the managers, in their data volumes, so it's only necessary to back up these nodes.<br>
+            - The ucp image provides a simple api for backups and restores.<br>
+            - The most popular mistake in this context is to just delete everything and try to start over. Do that and there's no way to debug what went wrong in the first place.
+        </aside>
+
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Common Problems</h2>
+        <p><b>X509 certificate signed by unknown authority when using client bundle</b></p>
+
+        <ul>
+            <li>Usually indicates incorrect SAN configuration</li>
+            <li><b>Best practice: use an external CA and follow their troubleshooting advice</b></li>
+            <li>Tutorial on replacing self-signed certs with external certs: <a href='http://dockr.ly/2lOmLaS'>http://dockr.ly/2lOmLaS</a></li>
+        </ul>
+
+        <aside class='notes'>
+            - recall all UCP inter-node communication is mutually TLS encrypted, and by default these certificates are internally generated and self-signed.<br>
+            - unknown certificate authorities are a common problem, and usually indicate an incorrect SAN configuration on install.<br>
+            - Docker security best practices recommend using a third-party certificate authority, in which case you'll have to refer to their troubleshooting guides.<br>
+            - For a tutorial on the Docker side of upgrading to external CAs (self signed is the default), see the link.
+        </aside>
+    </section>    
+
+    <section data-background="#254356" class="gray_bg">
+        <div class="half_container_one">
+            <h2>Common problems</h2> 
+            <p><b>X509 certificate signed by unknown authority when using client bundle</b></p>
+
+            <ul>
+                <li>If you're using a self-signed certificate:</li>
+                <li>
+                    <ul>
+                        <li>Check certificate on your browser to find the SAN values</li>
+                        <li>Change <code>DOCKER_HOST</code> variable to use a supported SAN value on your certificate</li>
+                        <li>Configure the SAN value on the manager node in the web UI</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <img src="src/modules/dops-monitoring-and-recovery-of-ucp-and-applications/images/node-config-san.PNG"/>
+        </div>
+
+        <div class="half_container_two" style="text-align: right;"><img src="src/modules/dops-monitoring-and-recovery-of-ucp-and-applications/images/common_problems.png" style="max-width: 90%;" alt="common problems"></div>
+
+        <aside class='notes'>
+            - If you'd still like to use the self-signed certs, compare the list of SANs in the certificate to those listed in UCP - if there are no matches, that's likely your problem.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Common problems</h2> 
+        <p><b>Clock Skew Error</b></p> 
+
+        <img src="src/modules/dops-monitoring-and-recovery-of-ucp-and-applications/images/UCP-clock_scew.PNG"/>
+
+        <ul>
+            <li>Caused by time syncing differences between your UCP nodes</li>
+            <li>If clock skew is detected, a warning message appears underneath the top navigation bar</li>
+            <li>If left unresolved, it can lead to further errors down the track</li>
+            <li>Solution is to install <code>ntp</code> on every UCP and DTR node</li>
+            <li>
+                <ul>
+                    <li>Run <code>sudo apt-get install ntp</code> or the equivalent command </li>
+                </ul>
+            </li>
+        </ul>
+
+        <aside class='notes'>
+            - Clock skew is a common bugbear for any distributed network; as this skew becomes worse, communication with other services will degrade.<br>
+            - An off the shelf install of `ntp` will keep things running smoothly.
+        </aside>
+    </section>  
+</section><section data-background="#254356" class="gray_bg">
+
+	<section data-background="#254356" class="gray_bg">
+		<h2><img src="src/modules/dops-dtr-intro/images/icon_lecture.png" class="slide_icon" alt="icon"> Docker Trusted Registry</h2>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>What is Docker Trusted Registry?</h2>
+		<p>Docker Trusted Registry (DTR) is a registry server that you can run securely on your own infrastructure.</p>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>What features does DTR include?</h2>
+		<ul>
+			<li>Image registry to store images</li>
+			<li>Pluggable storage drivers</li>
+			<li>Web based GUI for admin configuration</li>
+			<li>Easy and transparent upgrades</li>
+			<li>Logging</li>
+			<li>Docker Notary Support</li>
+		</ul>
+		<aside class="notes">Speaker Notes: The following features differentiate DTR from Docker Hub, the normal registry server: Web based GUI for admin configuration, Easy and transparent upgrades, Built in system usage metrics dashboard, logging, and built in support for basic and LDAP authentication</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>DTR Architecture</h2>
+	
+		<img src="src/modules/dops-dtr-intro/images/dtr_2.1.PNG" alt="dtr"/>
+
+		<aside class='notes'>
+			- This looks like a lot of bits and pieces, but at high level, DTR consists of a database, CA, web frontend, and optional notary. Similar to UCP, HA mode is available by replicating all this infrastructure across several nodes.
+		</aside>
+	
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>DTR Usage Examples</h2>
+
+		<ul>
+			<li class="fragment fade-in">
+				Containerized CI/CD
+				<ul>
+					<li>Registry for images as they move through pipeline</li>
+					<li>Facilitated by DTR Webhooks</li>
+					<li>Enhanced by Image Scanning</li>
+					<li>Developers only push code</li>
+				</ul>
+			</li>
+			<li class="fragment fade-in">
+				Containers as a Service
+				<ul>
+					<li>Curated app catalogue for devs</li>
+					<li>'Instant-on' environment and services across infra.</li>
+				</ul>
+			</li>
+		</ul>
+
+		<aside class='notes'>
+			- Two classic use cases for DTR are CI/CD and CaaS.<br>
+			- In the simplest CI/CD case, DTR serves as a parking lot for images as they move through a CI/CD chain. The beauty of a containerized CI/CD chain is that not only does Docker make it simple to move code through different dev, testing and deployment infra, a system of webhooks including DTR's own webhook feature means this workflow will be familiar to your developers; all they have to do is push a Dockerfile along with their code to kick off the build and CI/CD chain, which isn't too different from what they're likely used to.<br>
+			- In addition to serving as a passive holding pen for images in CI/CD, the latest DTR can also be a first-class player in a CI/CD chain by way of security scanning; while your regular CI/CD chain will test your apps as usual, DTR can now scan images and compare to a regularly updated CVE database, raising warnings when vulnerabilities creep into your images.<br>
+			- Another popular use case for DTR is as an on-prem app store for developers, where they can grab ops-approved services (think hadoop nodes, jenkins executors) to build their apps against. 
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>DTR Key Features</h2>
+
+		<ul>
+			<li>Webhooks</li>
+			<li>Image Security Scanning</li>
+			<li>Garbage Collection</li>
+			<li>Content Trust</li>
+		</ul>
+
+		<aside class='notes'>
+			- Like UCP, DTR is meant to provide extra features that address enterprise concerns when containerizing apps and workflows.<br>
+			- As already mentioned, one key use case of DTR is CI/CD; DTR has webhooks and security scanning that enable and enhance your testing pipeline<br>
+			- Any large enterprise shop is going to accrue images and layers that quickly fall by the wayside; DTR has smart garbage collection options to delete untagged and unused images, suppressing registry bloat.<br>
+			- Finally, a big part of Docker's recommended security strategy is provenance - that is, starting from trusted, validated official images, and then carefully tracking and controlling all actors who add layers on top of these bases, ensuring that only people you trust are getting to put bits on your servers. Content Trust is our mechanism for controlling this.<br>
+			- We'll discuss each of these features in more depth over the course of the workshop. 
+		</aside>
+
+	</section>	
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Common User base</h2>
+		<ul>
+			<li>DTR users are generally configured in UCP</li>
+			<li>Users can be grouped into Organizations and Teams to define repository access</li>
+			<li>LDAP syncing available through UCP</li>
+		</ul>
+
+		<aside class='notes'>
+			- One sidebar before we dig into actually running DTR: DTR and UCP share user bases. We'll see that we can create users from DTR for convenience, but they all go in the same pool of DDC user accounts.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>DTR Installation Requirements</h2>
+		<ul>
+			<li>Docker Datacenter license</li>
+			<li>UCP pre-installed</li>
+			<li>
+				CS Engine on any of:
+				<ul>
+					<li>CentOS 7.1, 7.2</li>
+					<li>RHEL 7.0, 7.1, 7.2</li>
+					<li>Ubuntu 14.04 LTS, 16.04 LTS</li>
+					<li>SUSE Linux Enterprise 12</li>
+				</ul>
+			</li>
+			<li>One dedicated node in your cluster for each DTR replica</li>
+		</ul>
+	</section>          
+	
+	<section data-background="#00a2a1" class="green_bg">
+	    <h2><img src="src/modules/dops-dtr-intro/images/icon_task.png" class="slide_icon" alt="icon"> Instructor Demo: DTR Installation</h2>
+	    <p>Instructor to demo the process of installing DTR with replicas</p>
+	</section> 
+	
+	<section data-background="#00a2a1" class="green_bg">
+	    <h2><img src="src/modules/dops-dtr-intro/images/icon_task.png" class="slide_icon" alt="icon"> Exercise: Create a public Repo</h2>
+	    <p>Complete the exercise "Create a DTR Repository" from the Docker for Enterprise Operations exercise handbook</p>
+
+	    <aside class='notes'>
+	    	Note that this exercise begins with the instructor making a user account on the DTR they just set up for each student; if you've got a large class, consider taking a coffee break first and having everyone come by at their convenience to set up their user / pass without keeping the whole class waiting.
+	    </aside>
+	</section> 
+</section><section data-background="#254356" class="gray_bg">
+	<section data-background="#254356" class="gray_bg">
+		<h2><img src="src/modules/dops-dtr-orgs-teams/images/icon_lecture.png" class="slide_icon" alt="icon"> DTR Organizations and Teams</h2>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>DTR Org Charts</h2>
+
+		<p>Four key entities:</p>
+		<ul>
+			<li><b>Organizations</b> namespace all other assets.</li>
+			<li><b>Repositories</b> hold images.</li>
+			<li><b>Teams</b> define access control to repositories.</li>
+			<li><b>Users</b> are grouped by teams and orgs.</li>
+		</ul>
+
+		<aside class='notes'>
+			- The key abstractions DTR provides for RBAC are organizations and teams.<br>
+			- The team abstraction is much like what we saw in UCP - it's a way to group users together and collectively assign them all the same permissions to the assets available.<br>
+			- DTR introduces the Organization abstraction as well, whose main function is to namespace repos and teams together, providing an extra layer of grouping for larger orgs. Organizations can also own repoistories directly, with implications for default access by organization members.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>A 'Simple' Case</h2>	
+
+		<img src='src/modules/dops-dtr-orgs-teams/images/dtr-org-chart.png'></img>
+
+		<aside class='notes'>
+			- This 'simple' example might be a bit jarring at first, but we'll examine each piece in detail and come back to this diagram later.<br>
+			- For now, the high level things to understand are:<br>
+			- Orgs own repositories and provide a high level namespace<br>
+			- Teams define access to repositories<br>
+			- Users can belong to one or more teams (and actually one or more organizations); users can also own repositories, which will have different R/W permissions depending on whether they're public or private.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Repositroy Permissions</h2>
+
+		<p>Repo access is controlled by two concerns:</p>
+		<ul>
+			<li>Public vs. Private, and Org vs User owned</li>
+			<li>Team Permissions</li>
+		</ul>
+
+		<aside class='notes'>
+			- All RBAC abstractions in DTR share a common purpose: to control who can read, write and administrate each repo in DTR.<br>
+			- Two main concerns affect this: the intersection of public and private status with org-owned versus user-owned repos, and team based permissions.
+		</aside>
+
+	</section>	
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Public/Private/Ownership Matrix</h2>
+
+		<table>
+			<tr>
+				<td></td>
+				<td>Public</td>
+				<td>Private</td>
+			</tr>
+			<tr>
+				<td style='vertical-align:top'>User-Owned</td>
+				<td>
+					<ul>
+						<li>Pull w/ auth</li>
+						<li>Visible to all</li>
+						<li>Push by owner</li>
+					</ul>
+				</td>
+				<td style='vertical-align:top'>
+					<ul>
+						<li>Only visible to owner & admins</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td style='vertical-align:top'>Org-Owned</td>
+				<td>
+					<ul>
+						<li>Anyone can pull</li>
+						<li>Visible to all</li>
+						<li>Push by R/W team</li>
+					</ul>
+				</td>
+				<td style='vertical-align:top'>
+					<ul>
+						<li>Must be R/W or R/O team to see repo</li>
+					</ul>
+				</td>
+			</tr>
+		</table>
+
+		<aside class='notes'>
+			- The first concern with repo access is the intersection of public versus private, and user owned vs. org owned.<br>
+			- For public repos, anyone can see the repo no matter what. Org owned means people can pull even without auth, and a team with R/W permission can push, as opposed to the user owned case.<br>
+			- For private org repos, a user must be explicitly part of a R/W or R/O team to even see that this repo exists on the dashboard; if not, the repo will be hidden and provide a 404 on an attempt to pull. A private user owned repo is only ever visible to the owner and admins.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Repository permissions</h2>
+
+		<ul>
+			<li>Read only</li>
+			<ul>
+				<li>Can browse repository and pull images</li>
+			</ul>
+			<li>Read write</li>
+			<ul>
+				<li>Can do everything from the read only permission</li>
+				<li>Push images</li>
+				<li>Delete tags</li>
+			</ul>
+			<li>Admin</li>
+			<ul>
+				<li>Can do everything from read only and read write permissions</li>
+				<li>Edit repository description</li>
+				<li>Set public or private</li>
+				<li>Change team access level</li>
+			</ul>
+		</ul>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Organization members</h2>
+
+		<ul>
+			<li>Users can belong to an organization without belonging to a team</li>
+			<li>Team members are automatically organization members</li>
+			<li>Organization members can:</li>
+			<ul>
+				<li>View other members</li>
+				<li>View organization teams and their members</li>
+				<li>View and pull images from public repositories in the organization</li>
+			</ul>
+			<li>Organization members do not have the ability to push images to a repository. They must belong to a team with the right permission</li>
+		</ul>
+
+		<aside class='notes'>
+			- One edge case 
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Organization admins</h2>
+
+		<ul>
+			<li>Individual organization members can be made into an organization admin</li>
+			<li>Organization admins have full admin access to all repositories in that organization</li>
+			<li>Can add users to the organization</li>
+			<li>Can create and configure teams in the organization</li>
+		</ul>
+	</section>
+
+	<section data-background="#00a2a1" class="green_bg">
+	    <h2><img src="src/modules/dops-dtr-orgs-teams/images/icon_task.png" class="slide_icon" alt="icon"> Instructor Demo: DTR Teams</h2>
+	    <p>Instructor will demonstrate creating organizations and teams in DTR and the access control associated with them</p>
+	</section> 
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Quiz</h2>	
+
+		<img src='src/modules/dops-dtr-orgs-teams/images/dtr-org-chart.png'></img>
+
+		<aside class='notes'>
+			- Now that we've explored orgs and teams a bit more, let's return to this diagram and answer some questions. [encourage students to call out answers to the following]:<br>
+			- Who can write to dtr/engineering/postgres? Why? (The core team - only they have R/W. In fact, no one else can even see the repo.)<br>
+			- Person 3 logs in. What repos can she see? (All core repos plus the public 'demo-repo') <br>
+			- Person 0 logs in. What repos can she see? (All, admin status)<br>
+			- Person 4 logs in. What repos can she write to? (Her personal repos plus dtr/engineering/web)<br>
+			- What repos can person 5 see? (/worker and /web, plus demo-repo but only if they log in).
+		</aside>
+
+	</section>
+
+</section><section data-background="#254356" class="gray_bg">
+	<section data-background="#254356" class="gray_bg">
+		<h2><img src="src/modules/dops-dtr-content-trust/images/icon_lecture.png" class="slide_icon" alt="icon"> Content Trust</h2>
+
+		<aside class='notes'>
+			- We've now completed our tour of basic DTR installation and user management. For the rest of the day, we'll discuss some of the more advanced features and concerns around DTR.<br>
+			- A top of mind concern for Docker is always security and trust. For the next two units, we're going to explore a little more of Docker's security strategy, and how it intersects with DDC.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Docker Security</h2>	
+
+		<p>Docker Security is multi-pronged:</p>
+
+		<ol>
+			<li>Encapsulation: container isolation</li>
+			<li>Access: RBAC, TLS</li>
+			<li class="fragment fade-in"><b style:"text-decoration: underline">Provenance</b>: authorship</li>
+			<li class="fragment fade-in">Scanning: active probing of images on disk</li>
+		</ol>
+
+		<aside class='notes'>
+			- Docker has not one but four overarching strategies for keeping your applications secure:<br>
+			- We've already seen the first two. The Docker platform goes to great lengths to prevent processes in one container from breaking out into others or the host os via encapsulation techniques, and also implements several controls on who can access your cluster, both via role based access control in DDC, and out of the box mutual TLS for all swarm communications.<br>
+			- The next concern we're going to discuss is provenance: where exactly did all the images in your DTR come from? Can you trust the authorship of your images, or has something malicious been injected into the registry? It turns out that this is a complicated question to answer.<br>
+			- The final tier, which we will discuss in the next unit, is scanning images on disk for vulnerabilities regardless of their origin. But for now, let's talk about provenance.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Content Trust</h2>
+
+		<ul>
+			<li>Image publishers sign their images</li>
+			<li>Image consumers can ensure their images are signed</li>
+			<li>Integrates The Update Framework (TUF) into Docker using Notary</li>
+			<ul>
+				<li><a href="http://theupdateframework.com/">http://theupdateframework.com/</a></li>
+				<li><a href="https://github.com/docker/notary">https://github.com/docker/notary</a></li>
+			</ul>
+		</ul>
+
+		<aside class='notes'>
+			- Docker Content Trust is composed of a collection of metadata files describing your repository, and a set of keys for ensuring the provenance of that same collection.<br>
+			- Based on TUF, a system specifically designed to secure software update systems.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>How content trust works for publishers</h2>
+
+		<ul>
+			<li>Metadata generated and signed on image push certifying authenticity</li>
+			<li>Four different keys are used:</li>
+			<ul>
+				<li><strong>Root key</strong>: fundamental signing authority</li>
+				<li><strong>Target key</strong>: per-repo user identity</li>
+				<li><strong>Snapshot key</strong>: repository state</li>
+				<li><strong>Timestamp key</strong>: tag freshness</li>
+			</ul>
+		</ul>
+
+		<p>(Jargon aside: the target key and snapshot key are sometimes collectively called the repository key, and the root key is sometimes called the offline key).</p>
+
+		<aside class="notes">
+			- There are four main metadata + key sets used in content trust, each to address a different attack situation:<br>
+			- [Instructors: a simple whiteboard exercise would be excellent here]<br>
+			- The Root key is the root of trust for your repository, from which all other keys are generated. Different repositories can use the same root key. You will only need this key if you are creating a new repository or rotating an existing key. The root key should be kept offline and backed up in hardware, as compromising it compromises the entire trust framework; losing this key cannot be recovered from with trust data intact.<br>
+			- Target keys are spawned by the root key, and are unique per repo; that way, if a repo's key is compromised, only that repo is compromised; not every repo administrated by the holder of the root key.<br>
+			- Snapshot keys capture information about the whole repo and its history; that way, if an attacker tries to hand a client a signed image older than one the client has already pulled, the attack can be detected and rejected.<br>
+			- Finally, timestamp keys ensure the 'freshness' of a pulled image, by signing rapidly expiring timestamp metadata so that even if an attacker has a more recently signed image than the client (thus overcomming the snapshot key filter), that image's timestamp metadata will soon expire, flagging the injected image as out of date.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Signed and unsigned tags</h2>
+
+		<ul>
+			<li>When content trust is enabled, publishers can choose to sign or not to sign each image ID pushed</li>
+			<li>Can iterate over unsigned images before signing them for release</li>
+		</ul>
+
+		<aside class="notes">
+			- Metadata can be generated and signed every time a publisher pushes to a repo; in other words, a given tag might contain image IDs with and without content trust signatures.<br>
+			- The expectation in this case is that developers can iterate on a tag in development without signing, and then sign when they're ready to deploy.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>How content trust works for image consumers</h2>
+
+		<p>If content trust is enabled, only signed images are available for use with:<p>
+
+		<ul>
+		  <li>docker image push</li>
+		  <li>docker image pull</li>
+		  <li>docker image build</li>
+		  <li>docker container create</li>
+		  <li>docker container run</li>
+		</ul>
+
+		<aside class="notes">
+			- This notion of having signed and unsigned IDs makes more sense when we understand how all this appears from the image consumer's perspective.<br>
+			- If content trust is turned on but no valid content trust is found for an image, push, build, create, pull and run will all refuse to proceed, suspecting a trust violation.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Notary</h2>
+
+		<ul>
+			<li>A utility tool for securely publishing and verifying content </li>
+			<li>Uses a client / server approach for running and interacting with trusted collections</li>
+			<li>Notary is integrated into the Docker Engine for the purpose of providing content trust on Docker images.</li>
+		</ul>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Content trust in DTR</h2>
+
+		<ul>
+			<li>DTR comes with a built in Notary server</li>
+			<li>Notary server must be configured to store signed metadata about trusted images</li>
+			<li>Users can interact with the Notary server by using the Notary CLI</li>
+		</ul>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Content trust workflow</h2>
+
+		<img src="/src/modules/dops-dtr-content-trust/images/delagation1.PNG" width="80%"/>
+
+		<aside class="notes">
+			<p>
+				Let's use an example to illustrate the process of setting up content trust for your DTR repositories.
+			</p>
+			<p>
+				Here we have a DTR server with a few repos setup. We have an admin and a developer. The admin, is a figurative representation of someone 
+				who is in charge of a particular set of repositories. In reality this could be a development manager or a product manager etc... Let's say
+				that repo 1 and repo 2 in the diagram are organizational repos and our Admin user is the person in charge of that particular organization
+			</p>
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+
+		<img src="/src/modules/dops-dtr-content-trust/images/delagation2.PNG" width="80%"/>
+
+		<aside class="notes">
+			<p>
+				The first thing we want to do is to initialise our trusted collection. We run the command <code>notary init -p</code> The -p option means to
+				publish the changes to the notary server straight away. Usually the notary CLI will stage the changes on the client side, similar to how Git 
+				stages changes, and we would have to run a separate command to publish the changes to the server.
+			</p>
+
+			<p>
+				When we run the init command, you can see how this will create the root key, targets key and the snapshot key. These keys will exist on the 
+				filesystem on the "Admin" users' machine.
+			</p>
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+
+		<img src="/src/modules/dops-dtr-content-trust/images/delagation3.PNG" width="80%"/>
+
+		<aside class="notes">
+			<p>The Snapshots key is what's used to sign images. However only our Admin user has this key at the moment. And in most cases the this user is 
+				not going to be the only person signing images. We want to allow our developer user to sign images in repo1 as well. But we don't want to just
+				pass over the snapshot key.
+			</p>
+
+			<p>
+				So what we do here is we "rotate" the snapshot key so that it's now managed by the Notary server. This is denoted by the --server-managed flag 
+				at the end of our command. We are now in a position to delagate the image signing to our developer user
+			</p>
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+
+		<img src="/src/modules/dops-dtr-content-trust/images/delagation4.PNG" width="80%"/>
+
+		<aside class="notes">
+			<p>In order for us to delagate image signing to other users, we must get each users' cert.pem file. In this scenario our developer user is sending
+				over his/her cert.pem file. This cert.pem file is found in the UCP client bundle for each user. Transfer of the file can be done
+				by any secure means. (i.e using SCP or physically handing over the file via a usb drive)
+			</p>
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+
+		<img src="/src/modules/dops-dtr-content-trust/images/delagation5.PNG" width="80%"/>
+
+		<aside class="notes">
+			<p>
+				Once we have the developers cert.pem file, we can run the notary delagation add command and specify the cert.pem file as our input.
+			</p>
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+
+		<img src="/src/modules/dops-dtr-content-trust/images/delagation6.PNG" width="80%"/>
+
+		<aside class="notes">
+			<p>
+				Once we run the delagation command, the develop can now sign images using a delagation key. But first they must import the key by running this 
+				notary key import command. we specify the key.pem file with the command. This key.pem  file is part of the users client bundle.
+			</p>
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+
+		<img src="/src/modules/dops-dtr-content-trust/images/delagation7.PNG" width="80%"/>
+
+		<aside class="notes">
+			<p>
+				Now that we have our delagation key, as a developer, we can sign the image tags we want to push. First we enable content trust 
+				with the export DOCKER_CONTENT_TRUST=1 variable.
+			</p>
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+
+		<img src="/src/modules/dops-dtr-content-trust/images/delagation8.PNG" width="80%"/>
+
+		<aside class="notes">
+			<p>
+				And now when we push our image tag into DTR, it will use the delagation key to sign the image
+			</p>
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+
+		<img src="/src/modules/dops-dtr-content-trust/images/delagation9.PNG" width="80%"/>
+		<aside class="notes">
+			<p>
+				This procedure of initializing a repo for content trust and delagating other signers needs to be repeated for each repository. 
+				Usually the person responsible for this is the owner of that repo. Here in this screen, our Admin user is initializing repo 2 for 
+				content trust. The same root key from before is used to perform the initialization. So you can see in the diagram that the admin user 
+				still only has the one root key. A new targets key and snapshots key is created for repo 2. 
+			</p>
+		</aside>
+
+	</section>
+	
+	<section data-background="#254356" class="gray_bg">
+		<h2>Content Trust in UCP</h2>
+		
+		<ul>
+		<li>UCP can be configured to only run signed images</li>
+		<li>During application deployment, UCP will check the image of each service to ensure they are signed</li>
+		</ul>
+		
+		<img src="src/modules/dops-dtr-content-trust/images/UCP-content-trust.PNG"/>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Content trust in UCP (cont'd)</h2>
+		
+		<ul>
+		<li>If <b>Only run signed images</b> is ticked, image must be signed by any UCP user</li>
+		<li>Can specify that image must be signed by a certain UCP team</li>
+		<li>At least one member of the team must sign the image</li>
+		<li>Multiple teams can be specified</li>
+		</ul>
+	</section>
+	
+	<section data-background="#00a2a1" class="green_bg">
+	    <h2><img src="src/modules/dops-dtr-content-trust/images/icon_task.png" class="slide_icon" alt="icon"> Exercise: Image Signing</h2>
+	    <p>Work through the 'Enabling Image Signing' and 'Delegate Image Signing' exercises in the Docker for Enterprise Operations Exercises book.</p>
+	</section> 
+
+</section><section>
+    <section data-background="#254356" class="gray_bg">
+        <h2><img src="src/modules/dops-dtr-image-scan/images/icon_lecture.png" class="slide_icon" alt="icon"> Image Security Scanning</h2>
+
+        <aside class='notes'>
+            - You can think of Docker's security strategy as having three main elements; the first two are container isolation, provided by a stack of linux tooling that prevent container breakouts, and provenance, which we implemented as Content Trust.<br>
+            - These passive tools make it hard for third parties to inject malicious or broken code into our images, but accidents happen; we want to add a proactive audit of everything we're putting in production, which is exactly what Image Security Scanning provides.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Layered Filesystems & Proactive Security</h2>
+
+        <div class='half_container_one'>
+            <img src='src/modules/dops-dtr-image-scan/images/lfs-3.png'></img>
+        </div>
+        <div class='half_container_two'>
+            <ul>
+                <li>Images made of read-only (shared) layers</li>
+                <li>Possible to scan each layer and produce a manifest of what's inside</li>
+                <li>Regularly check manifests against CVE databases</li>
+                <li>Provide webhook triggers to offer security in CI/CD</li>
+            </ul>
+
+        </div>
+
+        <aside class='notes'>
+            - Recall that images are composed of read only layers. This static nature is really convenient for a scanning strategy, because if we scan a layer once and produce a manifest, or 'bill of materials' of what's inside, we can periodically check that manifest against a CVE database to see if anyone has reported and vulnerabilities in the bits we're using.<br>
+            - Add on top of this some automation and webhooks sensitive to newly-discovered vulnerabilities, and you've got yourself an image security check ready to plug into your CI/CD stack.
+        </aside>
+
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>DTR Security Scan Features</h2>
+        <table>
+            <tr>
+                <td style="width:25%">
+                    <image src="src/modules/dops-dtr-image-scan/images/DTR_security_scan.png"></image>
+                </td>
+                <td style="width:75%; vertical-align: top">
+                    <ul>
+                        <li class="fragment fade-in">Layers: Integrated security scanning and vulnerability monitoring</li>
+                        <li class="fragment fade-in">Components: Binary level scanning provides deep visibility into components</li>
+                        <li class="fragment fade-in">Continuous vulnerability monitoring with ability to customize alerts, policies and configurations.</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <aside class="notes">
+            - Just such a scanning strategy is now natively available in DTR.<br>
+            - Security scanning actually scans right down to the binary content of everything present in a layer, so that the scan can't be fooled by misnamed libraries or links.<br>
+            - All alert levels and policies customizable.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Layer Vulnerability monitoring</h2>
+        <p>Full BOM for a Docker Image</p>
+
+        <image src="src/modules/dops-dtr-image-scan/images/DTR-BOM.png"></image>
+
+        <aside class='notes'>
+           - A bill of materials is generated per layer, detailing packages, library, and/or modules.<br>
+           - This helps address the source of the vulnerability from the developer's perspective, highlighting the line in the Dockerfile that needs attention.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Component Vulnerabilities and Licensing</h2>
+        <p> Binary level scanning provides deep visibility into components</p>
+
+        <img src="src/modules/dops-dtr-image-scan/images/DTR_component.png"></img>
+
+        <aside class='notes'>
+            - A BOM is generated at the binary level, too, giving more detail on what precisely went wrong in a layer. Also note that where possible, the BOM generator extracts license information about each component, creating the opportunity to do a license audit of all software components in your project in service of compliance.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>How DTR Security Scanning works</h2>
+
+        <div class='half_container_one'>
+            <image src="src/modules/dops-dtr-image-scan/images/scan.png"></image>
+        </div>
+        <div class='half_container_two'>
+            <ul>
+                <li class="fragment fade-in">Image layers get scanned individually</li>
+                <li class="fragment fade-in"> Two phases: <br>
+                  <ul>
+                      <li>scan (Bill-of-Materials generation)</li>
+                      <li>check (checking the BoM against the vulnerability database)</li>
+                  </ul>
+                </li>
+                <li class="fragment fade-in">Store the BoM for each layer</li>
+                <li class="fragment fade-in">Longer to scan and shorter to check</li>
+                <li class="fragment fade-in">Regular database updates from https://dss-cve-updates.docker.com/</li>
+            </ul>
+        </div>
+
+        <aside class="notes">
+            - As advertised, scanning happens in two phases. BoM generation is pretty slow, so it gets done once per layer, triggered when someone pushes a new layer to DTR or demands a scan, and stored indefinitely as needed.<br>
+            - Updating the security database triggers a re-check of all existing BoMs for new vulnerabilities. This step is very fast, so it repeated for the entire corpus of layers each scan.<br>
+            - CVE database updates are automatically pulled from Docker by default.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>CVE Database Updates</h2>
+            <div class='half_container_one'>
+                <image src="src/modules/dops-dtr-image-scan/images/DTR_offline.png"></image>
+            </div>
+            <div class='half_container_two'>
+                <ul>
+                    <li>DTR -> Settings -> Security</li>
+                    <li class="fragment fade-in">Automatic updates: daily 3 AM UTC; must be able to reach https://dss-cve-updates.docker.com/ on port 443.</li>
+                    <li class="fragment fade-in">Manual updates: uploaded through DTR, request from nautilus-feedback@docker.com</li>
+                </ul>
+            </div>
+        <aside class="notes">
+            - Note that auto updates are the default.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Scanning Automation</h2>
+        <image src="src/modules/dops-dtr-image-scan/images/DTR_offline_online.png", width="700"></image>
+
+        <aside class='notes'>
+            - Scanning can proceed automatically on push, or be restricted to only run when a user with write access manually initiates a scan on a particular repo.<br>
+            - BoM generation can be quite resource intensive, so may want to control scanning events manually.
+        </aside>
+    </section>
+
+    <section data-background="#00a2a1" class="green_bg">
+        <h2><img src="src/modules/dops-dtr-image-scan/images/icon_task.png" class="slide_icon" alt="icon"> Exercise: Image Scanning</h2>
+        <p>Work through the 'Image Scanning in DTR' exercise in the Docker for Enterprise Operations Exercise book.</p>
+    </section> 
+</section><section>
+    <section data-background="#254356" class="gray_bg">
+        <h2><img src="src/modules/dops-dtr-image-cache/images/icon_lecture.png" class="slide_icon" alt="icon"> Image Caching</h2>
+
+        <aside class='notes'>
+            So far, we've considered a DTR deployment at a single datacenter; but what if we want to serve images worldwide? To avoid horrible network latency and bandwidth consumption, DTR offers a caching system.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Image Cache Workflow</h2>
+
+        <div class='half_container_one' style="width:25% !important;">
+            <img src="src/modules/dops-dtr-image-cache/images/DTR_image_cache.png"></img>
+        </div>
+
+        <div class ='half_container_two' style="width:75% !important;">
+            <ul>
+                <li>Client requests an image from DTR</li>
+                <li>DTR authenticates the request</li>
+                <li>Request redirected to user-selected cache</li>
+                <li>Pulls from cache if available</li>
+                <li>Cache missing -> pull from DTR</li>
+            </ul>
+        </div>
+
+        <aside class="notes">
+            - The basic cache workflow is pretty simple; users interact with the same DTR they know and love, but if their preferred cache (which they get to select themselves) has a copy of whatever they're asking for, their request gets served from said cache.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Benefits of Image Content Cashing</h2>
+        <ul>
+            <li>Faster download time on pulling</li>
+            <li>Decrease bandwidth</li>
+            <li>Localized cache</li>
+            <li>Ease of use with DTR web UI</li>
+            <li>Configurable per user</li>
+        </ul>
+        <aside class='notes'>
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Image Content Cache Features</h2>
+        <table>
+            <tr>
+                <td style="width: 25%">
+                    <image src="src/modules/dops-dtr-image-cache/images/content_cache.png"></image>
+                </td>
+                <td style="width: 75%; vertical-align: top">
+                    <ul>
+                        <li class="fragment fade-in">Cache chaining is possible</li>
+                        <li class="fragment fade-in">Users can pick the cache most appropriate to them</li>
+                        <li class="fragment fade-in">Cache includes expiry (TTL) for storage of images</li>
+                        <li class="fragment fade-in">Centrally configure and control access to caches and repos</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <aside class="notes">
+            TTL (time to live)
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>DTR Cache Map Example</h2>
+        <img src='src/modules/dops-dtr-image-cache/images/Contet_cache_topology.png' width="400"></img>
+        <aside class='notes'>
+            - This is an exmple of DTR image cache node topology. The Image caches are distribted in different geographical regions.<br>
+            - You can pull images from Image Cache that is closer to you, for faster download. <br>
+            - Generally recommend not making a graph with more than two hops back to DTR for any node - otherwise latencies can become greater than just pulling from DTR.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Deployment models</h2>
+
+        <img src='src/modules/dops-dtr-image-cache/images/DTR_deploy_model.png'></img>
+
+        <aside class='notes'>
+            <p> Here are some cache deplyment models.</p>
+            <p> Simple: Flat caching topology map, all cache are pull from DTR </p>
+            <p> Comlex Chaining and Mesh: Caching topology is more complex, caches are chained and then eventually all pull from DTR. </p>
+            <p> High Availability: DTR is depolyed in HA mode with multiple Clusters and cache pull from DTR in HA cluster.</p>
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Image Caching configuration</h2>
+
+        <ul>
+            <li>Configured via <code>config.yml</code> file</li>
+            <li>Middleware options are <code>blobttl</code>, <code>upstreams</code>, and <code>cas</code></li>
+        </ul>
+        <pre>
+version: 0.1
+storage:
+  delete:
+    enabled: true
+  filesystem:
+    rootdirectory: /var/lib/registry
+http:
+  addr: :5000
+middleware:
+  registry:
+      - name: downstream
+        options:
+          blobttl: 24h
+          upstreams:
+            - originhost: https://&lt;dtr-url&gt;
+          cas:
+            - /certs/dtr-ca.pem
+        </pre>
+
+        <p>(See http://dockr.ly/2ktgK11 for more details and config examples)</p>
+
+        <aside class='notes'>
+            - This configures the cache to store the images in the directory /var/lib/registry, exposes the cache service on port 5000, and configures the cache to delete images that are not pulled in the last 24 hours.<br>
+            - It also defines where DTR can be reached, and which CA certificates should be trusted.<br>
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Image Caching Options</h2>
+        
+        <ul>
+            <li class="fragment fade-in"><code>blobttl</code>: how long to persist images on the cache</li>
+            <li class="fragment fade-in"><code>upstreams: originhost</code>: fully quallified URL for DTR</li>
+            <li class="fragment fade-in"><code>upstreams: upstreamhosts</code>: list of cache nodes 'one hop' upstream from this node</li>
+            <li class="fragment fade-in"><code>cas</code>: list of full paths within container to all CAs required (typically <code>/certs/...</code>)</li>
+        </ul>
+
+        <aside class='notes'>
+            - The most crucial new stuff in config.yml is here; new options include the ability to list upstream 
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Setting Up Content Cache</h2>
+
+        <ol>
+            <li>Create a <code>config.yml</code> on the cache host</li>
+            <li>Download the CA certificate used by DTR: <br>
+                <code>curl -k https://&lt;dtr-url&gt;/ca &gt; dtr-ca.pem</code>
+            </li>
+            <li>Run Docker content cache container
+                <pre>
+docker run --detach --restart always \
+--name content-cache \
+--publish 5000:5000 \
+--volume $(pwd)/dtr-ca.pem:/certs/dtr-ca.pem \
+--volume $(pwd)/config.yml:/config.yml \
+docker/dtr-content-cache:&lt;version&gt; /config.yml
+                </pre>
+            </li>
+            <li>Register cache with upstream DTR (using REST API)</li>
+            <li>Configure user cache defaults (using REST API)</li>
+        </ol>
+
+        <aside class='notes'>
+            - After creating our config.yml, grab DTR's public key from the usual URL, and set up a cache by running the `docker/dtr-content-cache` container, with some options.<br>
+            - Given that this is all based on an image, how would you set up HA for a cache? [run this as a service replicated across a few nodes in a swarm].<br>
+            - Your cache is now live, but needs to be plugged into DTR correctly by registering it with DTR, and setting up user cache preferences.
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>Configure DTR for Image Cache</h2>
+
+        <ul>
+            <li>In DTR, click your name -> API Docs</li>
+            <li>Expand <code>/api/v0/content_caches</code> form</li>
+            <li>Specify the name and host for your cache:
+                <pre>
+{
+  "name": "region-us",
+  "host": "http://<cache-public-ip>:5000"
+}
+                </pre>
+            </li>
+            <li>Click 'Try Me Out!' to fire the API call and register the cache.</li>
+        </ul>
+
+        <aside class='notes'>
+            <p> Navigate to the POST /api/v0/content_caches line and click it to expand. </p>
+            <p> DTR knows about the cache we’ve created, so we just need to configure our DTR user settings to start using that cache. </p>
+        </aside>
+    </section>
+
+    <section data-background="#254356" class="gray_bg">
+        <h2>User-Selected Caches</h2>
+
+        <p>DTR user settings to select content cache</p>
+
+        <img src='src/modules/dops-dtr-image-cache/images/Content_cache_per_user.png'></img>
+
+        <aside class='notes'>
+            <p>After you’ve deployed the caches, users can configure which cache to pull from on their DTR user profile page. </p>
+            <p>This allows users to choose which cache to use for faster image pulls.</p>
+            <p>In this example, users can go to their DTR profile page, and configure their user account to use the DC-EAST local cache in region-US </p>
+            <p>Then, use <code>docker pull &lt;dtr-url&gt;/&lt;region&gt;/&lt;repository&gt; </code> command to pull an image. </p>
+        </aside>
+    </section>
+</section>
+
+<section data-background="#254356" class="gray_bg">
+	<section data-background="#254356" class="gray_bg">
+		<h2><img src="src/modules/dops-dtr-webhooks/images/icon_lecture.png" class="slide_icon" alt="icon"> DTR Webhooks</h2>
+
+		<aside class='notes'>
+			- Any CI/CD container pipeline is going to need to be able to take action when images change in DTR; our system of webhooks allows for this. 
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>DTR Webhooks</h2>
+
+		<p>POST message with JSON payload, triggered on:</p>
+		<ul>
+			<li>Repo events: <code>TAG_PUSH</code>, <code>TAG_DELETE</code>, <code>MANIFEST_PUSH</code>, <code>MANIFEST_DELETE</code>, <code>SCAN_COMPLETED</code>, <code>SCAN_FAILED</code></li>
+			<li>Namesapce events (repo CRUD): <code>REPO_EVENT</code></li>
+			<li>Global events: <code>SCANNER_UPDATE_COMPLETED</code></li>
+		</ul>
+
+		<aside class='notes'>
+			- As is typical for any webhooks service, triggers result in some relevant JSON getting POST'ed to whatever URL you'd like.<br>
+			- Events that can trigger a webhook are pushes, pulls and security scans at the repo level; create / update / destroy operations at the namespace level; and complete security scans at the global registry level.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Setting up a Webhook</h2>
+
+		<ol>
+			<li>Navigate to the API Docs through DTR's top-right user menu</li>
+			<li>Open the <code>POST api/v0/webhooks</code> form</li>
+			<li>
+				Enter the webhook's metadata:
+				<pre>
+{ 
+  "type": "TAG_PUSH",
+  "key": "myorg/repo-of-interest",
+  "endpoint": "http://url-to-post-hook-to:5000"
+} 
+				</pre>
+
+			</li>
+			<li>Click 'Try it Out!' to register webhook with DTR</li>
+			<li>Click 'Try it Out!' on the GET request for <code>api/v0/webhooks</code> to list all registered webhooks.</li>
+		</ol>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Webhook Payload</h2>
+
+		<ul>
+			<li>
+				Webhook payloads always come in a wrapper:
+				<pre>
+{
+  "type": "...",
+  "createdAt": "2012-04-23T18:25:43.511Z",
+  "contents": {...}
+}
+				</pre>
+			</li>
+			<li>The <code>contents</code> key depends on the event type; see http://dockr.ly/2knbu3J for the full spec.</li>
+		</ul>
+
+		<aside class='notes'>
+			- All webhooks come in the same wrapper, with a type, timestamp, and payload that depends on the type of event. See the docs for all the details on the contents of each type.
+		</aside>
+
+	</section>
+
+	<section data-background="#00a2a1" class="green_bg">
+	    <h2><img src="src/modules/dops-dtr-webhooks/images/icon_task.png" class="slide_icon" alt="icon"> Exercise: DTR Webhooks</h2>
+	    <p>Work through the 'DTR Webhooks' exercise in the Docker for Enterprise Operations Exercise book.</p>
+	</section> 
+</section><section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2><img src="src/modules/dops-dtr-troubleshooting/images/icon_lecture.png" class="slide_icon" alt="icon"> DTR Troubleshooting</h2>
+
+		<aside class='notes'>
+			- As in our UCP lesson, we'll point out a few common problems encountered when setting up DTR
+		</aside>		
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Node Availability</h2>
+
+		<p>
+			<b>"Failed to execute phase2" error </b>
+		</p>
+
+		<ul>
+			<li>Can occur during installation of DTR or when joining additional replicas</li>
+			<li>Caused by UCP scheduler configuration that blocks Admins from being able to run containers on UCP manager nodes and nodes with DTR</li>
+		</ul>
+
+		<aside class='notes'>
+			- One popular error is this fairly cryptic phase2 error; this can actually come about a couple of different ways, but the most common one is when DTR is unable to find a node that it can deploy it's containers on.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Node Availability</h2>
+
+		<pre>
+ubuntu@ucp-controller:~$ docker run -it --rm docker/dtr:2.1.0-beta3 join --ucp-node dtr-replica-2 --ucp-insecure-tls
+INFO[0000] Beginning Docker Trusted Registry replica join
+ucp-url (The UCP URL including domain and port): https://ec2-54-218-75-232.us-west-2.compute.amazonaws.com
+ucp-username (The UCP administrator username): admin
+ucp-password:
+INFO[0012] Validating UCP cert
+INFO[0012] Connecting to UCP
+INFO[0013] UCP cert validation successful
+INFO[0020] This cluster contains the replicas: a1c7be12b5d5 cb2a10dc7c89
+Choose a replica to join to [a1c7be12b5d5]: a1c7be12b5d5
+INFO[0000] Validating UCP cert
+INFO[0000] Connecting to UCP
+INFO[0000] UCP cert validation successful
+FATA[0016] Failed to dump certs: Problem running container 'dtr-helper' from image 'docker/dtr:2.1.0-beta3': 
+Couldn't create container 'dtr-helper' from image 'docker/dtr:2.1.0-beta3': Polling failed with 15 attempts 1s apart: 
+Error response from daemon: Unable to find a node that satisfies the following conditions
+[available container slots]
+[container==dtr-etcd-a1c7be12b5d5 (soft=false) container!=ucp-controller (soft=false) container!=dtr-api-* (soft=false)]
+FATA[0044] Failed to execute phase2: Phase 2 returned non-zero status: 1
+		</pre>
+
+		<aside class='notes'>
+			- in practice, the dtr joining procedure might fall over like this; note the 'Unable to find a node that satisfies the following conditions' complaint.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Node Availability - Solution</h2>
+
+		<ul>
+			<li>Tick the <b>"Allow Administrators to deploy containers on UCP controllers or nodes running DTR"</b> on the UCP scheduler</li>
+			<li>Remember to uncheck the box once DTR and replica installation is complete</li>
+		</ul>
+
+		<img src="src/modules/dops-dtr-troubleshooting/images/ucp-scheduler.PNG"/>
+
+		<aside class='notes'>
+			- To solve this, head on over to your admin settings in UCP and allow Administrators to deploy containers on UCP and DTR managers while you set up DTR.<br>
+			- Best practice recommends that you disable this once you're finished setting up, to minimize the load on the machines managing your cluster.
+		</aside>
+	</section>
+
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Certificate error</h2>
+
+		<ul>
+			<li><b>X509: certificate signed by unknown authority</b></li>
+			<li>Can occur when push and pulling images</li>
+			<li>Most likely cause is that your Docker Engine has not been configured to trust DTR</li>
+			<li>Can also occur on the <code>docker login</code> command of the CLI</li>
+		</ul>
+
+		<pre>
+ubuntu@ucp-controller:~$ docker login ec2-54-244-191-106.us-west-2.compute.amazonaws.com
+Username: admin
+Password:
+Error response from daemon: Get https://ec2-54-244-191-106.us-west-2.compute.amazonaws.com/v1/users/: 
+x509: certificate signed by unknown authority
+		</pre>
+
+		<aside class='notes'>
+			- Much like UCP, inter-node communication with DTR is all mutually TLS encrypted - 509 complaints when trying to interact with DTR are typically because Engine doesn't trust DTR.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Certificate error - Solution</h2>
+
+		<ul>
+			<li><b>Best practice: use a third party CA</b></li>
+			<li>Configure your Docker Engine to trust the certificate used by DTR: <a href="http://dockr.ly/2lgMhDE">http://dockr.ly/2lgMhDE</a></li>
+			<li>Remember to do this for all engines in the cluster.</li>
+		</ul>
+
+		<aside class="notes">
+			- As per UCP, we recommend a third party cert rather than a self signed cert for maximum security.<br>
+			- Once that's set up, go throught the tutorial here, or in the exercise book to make sure all Engines trust DTR.<br>
+			- Note we really do mean ALL engines in the cluster, as when you pull an image from the web UI, it will be pulled to every node in the cluster. If any of them don't trust DTR, the x509 error will be thrown even though the pull will succeed on those nodes that do trust DTR's certificate.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>OpenID_Error</h2>
+
+		<ul>
+			<li>DTR web interface does not load and the following message appears on the screen instead:</li>
+		</ul>
+
+		<pre>
+{
+  "errors": [
+    {
+      "code": "OPENID_ERROR",
+      "message": "Failed to establish openid authentication",
+      "detail": "OpenID Connect Error\n\ninvalid_client\n\nunable to validate authentication JWT: JWT expired at 1478717265 - current time is 1478717267"
+    }
+  ]
+}</pre>
+
+		<aside class='notes'>
+			- If you try to visit DTR in the browser and get this particular blob of JSON, it's often due to the same clock skew problem that UCP flagged above.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>OpenID_Error - Solution</h2>
+
+		<ul>
+			<li>Often a clock skew error</li>
+			<li>Install <code>ntp</code> on every UCP and DTR node</li>
+			<li>
+				<ul>
+					<li>Run <code>sudo apt-get install ntp</code> or the equivalent command on your Linux OS</li>
+				</ul>
+			</li>
+		</ul>
+
+		<aside class='notes'>
+			- Just as with UCP, we resolve this by installing ntp on every node, to keep clocks properly synced.<br>
+			- Remember, that as clocks drift further out of sync, compounding problems can arise.
+		</aside>
+	</section>
+
+</section>
+
+
+
+
+<section>
+	<section data-background="#254356" class="gray_bg">
+		<h2><img src="src/modules/dops-architecture/images/icon_lecture.png" class="slide_icon" alt="icon"> Architecting a DDC Deployment</h2>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Main Concerns</h2>
+
+		<ul>
+			<li>Node Sizing</li>
+			<li>Storage Strategy</li>
+			<li>Load Balancing</li>
+		</ul>
+
+		<aside class='notes'>
+			When setting up DDC, there are a few things to consider: <br>
+			 - What sort of machines should we use for each component? <br>
+			 - How will we manage image storage, or what will sit behind DTR? <br>
+			 - How we correctly route and load balance access to DDC
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Node Sizing</h2>
+
+		<ul>
+			<li>
+				Start with the <a href='https://docs.docker.com/datacenter/ucp/2.0/guides/installation/system-requirements/'>minimum requirements</a>
+			</li>
+			<li>
+				UCP controller nodes can be near-minimal.
+			</li>
+			<li>
+				Worker nodes are case-dependent:
+				<ul>
+					<li>Container density</li>
+					<li>Hardware bottlenecks</li>
+				</ul>
+			</li>
+			<li>Feel free to mix-and-match!</li>
+		</ul>
+
+		<aside class='notes'>
+			- with a modest number of nodes, feel free to use fairly minimal machines for the UCP controllers <br>
+			- general advice both for node sizing and number of UCP manager and DTR replicas: start with the minimums and scale up only when you can demonstrate a specific need. Every deployment is a bit different, so putting the onus on case-by-case evidence for the need for scale minimizes costs.<br>
+			- keep in mind, there's no need for all your nodes to be the same; feel free to mix and match nodes with different capabilities in order to only pay for what you really need.<br>
+			- asides from the typical concerns of hardware bottlenecks (memory, I/O bandwidth, storage requirements...), the unique node sizing concern that Docker presents is contianer density, or how many containers you envision running on a given worker node.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Container Density</h2>
+
+		<img src='src/modules/dops-architecture/images/node-sizing.png'></img>
+
+		<aside class='notes'>
+			- Node sizing has much to do with how you envision distributing containers across nodes. <br>
+			- If a container runs a process that can usefully consume all avilable resources, it makes sense to provision powerful machines. <br>
+			- More nuanced is what to do with large numbers of lightweight processes. By default they will spread out over many machines; these nodes need only be as big as expected loads. Also in this case, the more nodes present, the less disruptive a single node failure is.<br>
+			- But, the calculus can change in the presence of global services. Resource intensive nodes now need to be even bigger to acommodate the global services, and spread-strategy scheduling results in a higher fraction of resources being used by these global services. Larger, binpacked nodes might be a better idea when global services consume non-trivial resources (but large global services are to be avoided in application design).<br>
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Storage Strategy</h2>
+
+		<p>Three arenas to consider:</p>
+		<ul>
+			<li>Images in-flight</li>
+			<li>Images at rest</li>
+			<li>Persistent data (Volumes)</li>
+		</ul>
+
+		<aside class='notes'>
+			- Three main areas of concern when thinking about how Docker will store information:<br>
+			- How will individual Docker Engines implement the Copy on Write layered filesystem efficiently? Running containers share image layers on a single host, and how these shared layers are managed can affect performance.<br>
+			- DTR is responsible for serving images to individual workers - but where should those images sit on disk? Storage backend choices involve tradeoffs between costs and performance.<br>
+			- Finally, how we choose to store volume data makes a difference in how containers can access volumes across hosts.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+	    <h2>Images are Layered Filesystems</h2>
+	    <ul style='float:left; max-width: 47%;'>
+	    	<li>Image = stack of immutable layers</li>
+	    	<li>Start with a <i>base image</i></li>
+	        <li>Images & containers share  read-only layers</li>
+	    	<li>User sees a union file system</li>
+	    </ul>
+	    <img src='src/modules/dops-architecture/images/lfs-1.png' style='float:right; max-width:50%'></img>
+
+	    <aside class="notes">
+	    	 - Recall that images are composed in layers; each layer consists of a bunch of files that capture how this layer adapts the one beneath it.<br>
+	    	 - These stacks of layers always start with a base image, which typically captures only the base operating system for this image.<br>
+	    	 - This way, containers from the same image can share base layers on the same host; resource efficient, and secure since base layers are read only and thus verifiable.
+	    </aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Copy on Write</h2>
+
+		<img src='src/modules/dops-architecture/images/copy-on-write.png'></img>
+
+		<aside class='notes'>
+			- Also recall the details of copy on write: files aren't copied to upper layers until they are changed.<br>
+			- The layered or union file system with a copy-on-write strategy are the key behaviors Docker graph drivers have to provide, and decisions around which one to use and how they are optimized hinge on these concepts.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h3>Storage Strategy pt 1</h3>
+		<h2>Graph Drivers</h2>
+
+		<ul>
+			<li>Provides union file system & copy on write behavior</li>
+			<li>Performance is most important metric</li>
+			<li>Standard advice: stick to the defaults</li>
+			<li>See compatibility matrix: <a href='https://success.docker.com/Policies/Compatibility_Matrix'>https://success.docker.com/Policies/Compatibility_Matrix</a></li>
+			<li>Also see pro/con chart: <a href='http://dockr.ly/2kl01xg'>http://dockr.ly/2kl01xg</a></li>
+		</ul>
+
+		<aside class='notes'>
+			- graph drivers are responsible for providing the union file system and copy on write behavior sketched out on the previous slide.<br>
+			- graph drivers need to be well written or else risk write latency; typically involve copy-up operations the first time a file or block is accessed, which can lag initially if writes and filesizes are dramatically different.<br>
+
+			- aufs and devicemapper are well-tested solutions that are set up by default when installing CS Engine. But, due to potentially large numbers of layers in a union, these graph drivers may not provide optimal performance, especially in situations of a node with a large number of images and stopped containers being managed by the graph driver.<br>
+			- overlayfs limits the number of layers in the union, providing superior performance in some situations - but, this is relatively new technology and will produce a higher rate of bugs / problems. If you're feeling daring, try out `overlay` on linux kernels pre 4.0, or `overlay2` on 4.0 and up.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Graph Drivers: aufs</h2>
+
+		<ul>
+			<li>pro: shares layers efficiently, good for high density nodes</li>
+			<li>con: operates at file level (high initial latency)</li>
+			<li>natural habitat: ubuntu</li>
+			<li>more info: http://dockr.ly/2jVc1Zz</li>
+		</ul>
+
+		<aside class='notes'>
+			- Another Union FileSystem is a battle-tested implementation that comes as the recommended default on Ubuntu.<br>
+			- Great strength is ability to efficiently share underlying image layers between containers - an excellent feature for setups that plan to have high container density.<br>
+			- But, operates on the per-file level, meaning that the first time a file is written to in a container, the whole thing has to be copied up to the writable layer - even if you're flipping one bit in a 2GB file, the whole thing gets copied.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Graph Drivers: devicemapper</h2>
+
+		<ul>
+			<li>pro: block level ops = low latency with large files</li>
+			<li>con: block level ops bad for many small writes</li>
+			<li>con: n containers create n layer copies - bad for density</li>
+			<li>natural habitat: RHEL, CentOS</li>
+			<li>more info: http://dockr.ly/2jqbzyT</li>
+		</ul>
+
+		<aside class='notes'>
+			- devicemapper differs from aufs practically in that it copies up info in 64k blocks, rather than entire files. Thus a small initial write will have much lower latency with this driver when interacting with large files<br>
+			- but, aufs is observed to perform better in the limit of many rapid writes, as no further copy-up operations are required by aufs for a given file, after the initial expensive operation completes.<br>
+			- devicemapper's most serious limitation is in its memory usage; n copies of a container on a host will create n copies of that container's files, making this an unsuitable choice when high container density is desired 
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Graph Drivers: overlay</h2>
+
+		<ul>
+			<li>pro: similar to aufs but faster</li>
+			<li>pro: containers share page cache - great for high density nodes</li>
+			<li>con: not officially supported for CS Engine (yet)</li>
+			<li>natural habitat: no one (yet)</li>
+			<li>more info: http://dockr.ly/2cxvmZG</li>
+		</ul>
+
+		<aside class='notes'>
+			- looking to the future, a lot of people are excited about overlay (for Linux kernel earlier than 4.0) or overlay2 (for 4.0 up).<br>
+			- conceptually very similar to aufs, but limits number of layers to speed up file search and copy-up.<br>
+			- shared page cache means multiple containers looking at the same big file will get a density advantage<br>
+			- still relatively new; might be less stable than aufs or devicemapper.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h3>Storage Strategy pt 2</h3>
+		<h2>Registry Storage</h2>
+
+		<ul>
+			<li>Where should DTR park its images at rest?</li>
+			<li>Needs to be cheap, resilient & accessible</li>
+			<li>Speed and performance less crucial</li>
+		</ul>
+
+		<aside class='notes'>
+			- the second element of our storage strategy is how to warehouse images known to our registry.<br>
+			- global registry storage has a different set of concerns than per node image management; registry storage typically needs to house a lot of data cheaply, be stable over long timescales, and accessible to all nodes who want to run containers based on those images. Since image checkout is typically not a high-frequency operation, registry storage can feasibly compromise on read, write and transfer speed compared to graph drivers.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Local Filesystem Registry</h2>
+
+		<ul>
+			<li>Default</li>
+			<li>Usecase: trials, small local deployments</li>
+			<li>HA not available</li>
+		</ul>
+
+		<aside class='notes'>
+			- with absolutely no interference on your part, DTR will warehouse your images and repo information in a simple local filesystem<br>
+			- this is fine when you're just getting started with DDC, but at scale it leaves a lot to be desired, particularly as it does not support high availability mode with DTR replicas.<br>
+			- larger scale deployments and enterprises will benefit from a cloud based object store.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Cloud based object store</h2>
+
+		<ul>
+			<li>
+				Images make sense in cloud object stores:
+				<ul>
+					<li>Immutable</li>
+					<li>Infrequent access</li>
+					<li>Large / variable metadata</li>
+				</ul>
+			</li>
+			<li>DTR provides backends for S3, Azure, and Swift</li>
+			<li>Enables high availability mode for DTR</li>
+			<li>Can leverage usual advantages of regions, AZ...</li>
+			<li>(NFS also available, but object stores usually better)</li>
+		</ul>
+
+		<aside class='notes'>
+			- Images were made for object stores. Recall object stores in general are highly resilient, highly scalable stores that work best in high-latency, archival applications - which is exactly DTR. Images are immutable, they come with a bunch of metadata, and image pulls and pushes to the registry aren't (shouldn't be) a high-frequency operation.<br>
+			- drivers available for the big players <br>
+			- enables high availability mode for DTR; by setting up multiple replicas of DTR, the registry remains available even after node failure.<br>
+			- also affords all the usual benefits of working in the cloud; region segmentation, colocation, at-rest encryption etc.<br>
+			- some users like to use NFS, which is also a supported storage backend, because it's very familiar to them. Because image registries are so well suited to object stores, however, the cloud-based options are often more performant in practice.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h3>Storage Strategy pt 3</h3>
+		<h2>Data Volumes</h2>
+
+		<ul>
+			<li>Volumes provide data persistence</li>
+			<li>But volumes typically live on only one node</li>
+			<li>Need a power-up to work effectively with a swarm</li>
+		</ul>
+
+		<aside class='notes'>
+			- always remember: a good container is a stateless and ephemeral container!<br>
+			- if you want to persist data for any reason, it should absolutely not be getting written to image layers; it should be persisted in a data volume<br>
+			- recall: data volumes essentially act like directories mounted inside a container; data volumes persist past the lifecycle of any one container, and can be mounted into multiple containers simultaneously to share data.<br>
+			- out of the box, volumes are pretty simple; they live as a directory on a single host, available only to containers on that host. Not only is this an awkward fit for our multi-node distributed applications, its only really appropriate for semi-permanent storage, like caching. Something more robust is needed for long term storage.<br>
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Volume Plugins</h2>
+
+		<ul>
+			<li>Multi host & cloud backend volumes</li>
+			<li>Concerns: r/w frequency, availability, resilience</li>
+			<li>See list: <a href='http://dockr.ly/2kf31M2'>http://dockr.ly/2kf31M2</a></li>
+		</ul>
+
+		<aside class='notes'>
+			- Docker plugins are the powerup data volumes need at scale<br>
+			- third party plugins that provide multi-host or cloud storage support for volumes<br>
+			- lets us make performance-optimized choices: if we need rapid r/w to a volume from a batch of images, a plugin to enable on-prem volume sharing across hosts might make the most sense; if we want to share data across remote locations or have a slow-updating or archival purpose, cloud storage might be best.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Load Balancing</h2>
+
+		<p>Two dimensions of load balancing:</p>
+		<ul>
+			<li>
+				Simple case - DDC:
+				<ul>
+					<li>UCP Controllers</li>
+					<li>DTR Replicas</li>
+				</ul>
+			</li>
+			<li>
+				More nuanced - service level LB
+			</li>
+		</ul>
+
+		<aside class='notes'>
+			- The last major architectural decision is how to load balance traffic effectively, in two distinct arenas: load balancing traffic to DDC tools, and load balancing application traffic to services.<br>
+			- The case of DDC tools like UCP and DTR is simple enough: since the number of HA replicas for each of these tools is relatively static, a simple load balancer sitting in front of each does the job.<br>
+			- The case of application load balancing, across all the containers running for a given service, is more nuanced.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Routing Meshes</h2>
+
+		<ul>
+			<li>Swarm Routing Mesh: transport layer, external LB</li>
+			<li>HTTP Routing Mesh: application layer, internal LB</li>
+		</ul>
+
+		<aside class='notes'>
+			 - Docker offers two routing meshes: swarm and HTTP. <br>
+			 - To first order, this is essentially transport layer vs. application layer load balancing. For those unfamiliar with these concepts: transport layer load balancing routes traffic based on address information only, examining just the first few packets of the request, while application layer routing can examine the entire contents of a message.<br>
+			 - Operationally, the way to distinguish between the two is on where the load balancing really happens; swarm routing mesh makes sense for integrating with an external load balancer, while the HTTP routing mesh provides internal, Docker-native load balancing based on characteristics of the request header. 
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Swarm Routing Mesh</h2>
+
+		<img style='width:70%' src='src/modules/dops-architecture/images/routing-mesh.png'></img>
+
+		<aside class='notes'>
+			- The Swarm Routing Mesh allows a service to expose itself on a particular port; traffic on that port to any node in the swarm will be balanced via virtual IP across containers running that service - even if the node hit by the request isn't running a container for that service.<br>
+			- In this way, an external load balancer can spread requests for this over the whole swarm, by directing requests to that service to the appropriate port on any arbitrary swarm member.<br>
+			- Critically: all this happens at the transport layer, allowing mutual TLS for secure inter-service communication.
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>HTTP Routing Mesh</h2>
+
+		<img style='width:70%' src='src/modules/dops-architecture/images/hrm-up-close.png'></img>
+
+		<aside class='notes'>
+			- The HTTP routing mesh (HRM) is actually a special service provided by UCP that works in tandem with the swarm routing mesh in the following way:<br>
+	    	- Traffic comes in through the swarm mode routing mesh on the ingress network to the HRM service's published port. <br>
+	    	- As services are created, they are assigned a VIP on the swarm mode routing mesh <br>
+	    	- The HRM receives the TCP packet and inspects the HTTP header.<br>
+	        - Services that contain the label com.docker.ucp.mesh.http are checked if they match the HTTP Host: header<br>
+	        - If a Host: header and service label match, then traffic is routed to the service's VIP using the swarm mode routing mesh (L4), which is load balanced across all service containers as per the usual swarm mesh net.<br>
+	        - In this way, no reconfiguration of your load balancer is needed to load balance across new services; that work is done by the developer setting the appropriate service labels and HTTP headers, while the load balancer points at exactly one service and port: the HRM.<br>
+			- This is ideal for situations where it's inconvenient to require your external load balancer to be aware of the ports a service is published on, for example if developers who don't have admin access to your load balancers want to be able to spin up load-balanced services.
+		</aside>
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Load Balancers & Routing Meshes</h2>
+
+		<ul>
+			<li>Transport layer / Swarm: TLS-viable, but load balancer config intensive</li>
+			<li>Application layer / HRM: transparent to external load balancer</li>
+		</ul>
+
+		<aside class='notes'>
+			- At some level, mesh net usage is the application developer's problem; they'll have to be prepared to manipulate the load balancer's DNS if they want to use L4 swarm mesh net balancing, or supply the correct service label and HTTP header info if they intend to use the HRM.<br>
+			- From a datacenter architecture perspective, the relevant consideration is in enabling your dev's intentions. If they need to use L4 mesh, then try and make it frictionless for them to update the load balancer's DNS; if this isn't possible, push them to leverage the HRM. 
+		</aside>
+
+	</section>
+
+	<section data-background="#254356" class="gray_bg">
+		<h2>Datacenter Architecture Takeaways</h2>
+
+		<ul>
+			<li>Node sizing depends on container density & global services</li>
+			<li>
+				Storage strategy has three concerns:
+				<ul>
+					<li>Per-node image representation</li>
+					<li>Global image storage</li>
+					<li>Volume accessibility</li>
+				</ul>
+			</li>
+			<li>Application needs tightly coupled to load balancing needs</li>
+		</ul>
+
+		<aside class='notes'>
+			- The three main concerns for datacenter design are node sizing, storage strategy, and load balancing. <br>
+			- Node sizing depends on how resource intensive your services are; how densely you want to pack containers; and how much overhead yo have from global services.<br>
+			- Storage strategy is multi-faceted; must consider graph drivers, largely determined by base OS, write patterns (file vs block, frequency), and container density; DTR backend; and cross-host volume access.<br>
+			- Load balancing closely connected to application design, is affected by things like need for mutual TLS and friction from developers modifying load balancer DNS.
+		</aside>
+	</section>
+</section><section>
+	<section data-background="#1488c6" class="blue_bg">
+		<h2>Enterprise Operations Takeaways</h2>
+
+		<p>In this workshop, we explored:</p>
+		<ul>
+			<li>
+				Universal Control Plane
+				<ul>
+					<li>Application management</li>
+					<li>User management</li>
+					<li>Monitoring</li>
+					<li>Security</li>
+					<li>Networking</li>
+					<li>Datacenter architecture</li>
+				</ul>
+			</li>
+			<li>
+				Docker Trusted Registry
+				<ul>
+					<li>Image sharing</li>
+					<li>Content trust</li>
+					<li>Image scanning</li>
+					<li>Image caching</li>
+					<li>Webhooks</li>
+				</ul>
+			</li>
+			<li>...plus other odds and ends.</li>
+		</ul>
+
+		<p>All of which focus on provisioning an enterprise-grade <b>software supply chain</b>. </p>
+
+		<aside class='notes'>
+			- When learning about Docker fundamentals, you started by seeing what Docker means when we say 'any app, anywhere' - even the most basic Docker deployment allows our apps to migrate across infra and environments frictionlessly.<br> 
+			- On top of that, we added the abstractions of swarms and services; adding this abstraction layer on top of processes and nodes supercharged the scalability of our applications. We find ourselves in a place where we are poised to scale up in size and out in infrastructure very quickly.<br>
+			- In order for ops teams to wrangle large, enterprise scale deployments of distributed applications, we needed something more; we needed what Docker refers to as the Software Supply Chain, and that's exactly what Docker Datacenter provides.<br>
+			- A supply chain needs two things: it needs oversight, and it needs to deliver its payloads. We saw over the last two days how UCP and DTR respectively satisfy both these concerns.<br>
+			- UCP gave us enterprise-grade tooling to control to define teams and users, and maintain fine-grained control over who has access to what assets, while simultaneously giving us a dashboard to manage and monitor all aspects of our apps.<br>
+			- DTR further enhanced our RBAC capabilities, but also powerfully enhanced the application and infrastructure security that Docker  already excels at, by providing things like image scanning and content trust. DTR goes beyond even this, to integrate with a CI/CD based software supply chain via webhooks and image caching.<br>
+			- Taken together, Docker Datacenter's software supply chain empowers us to not only move our apps across infrastructure, but to do it at scale, with all the guarantees of security and stability that enterprise ops teams demand.
+		</aside>
+	</section>
+
+	<section data-background="src/modules/dops-ending/images/ending-slide.jpg" class="blue_bg">
+		<h2>Docker for Enterprise Operations</h2>
+		<p>Thanks for coming! Please take our feedback survey:</p>
+		<a href='https://dockertraining.typeform.com/to/ZxRXRe'>https://dockertraining.typeform.com/to/ZxRXRe</a>
+		<p>Get in touch: training@docker.com</p>
+		<a href='www.training.docker.com'> www.training.docker.com</a>
+	</section>
+</section>
+
             </div>
         </div>
 
