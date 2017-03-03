@@ -102,6 +102,7 @@ pre.large { font-size: 0.6em !important; }
    position:absolute;
    top:0;
    right:0;
+   z-index:-1;
   }
 
 .reveal .topcorner img {
