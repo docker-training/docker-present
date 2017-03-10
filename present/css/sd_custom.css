@@ -2,6 +2,8 @@
 /* CSS Document */
 
 /* Fonts */
+@font-face { font-family: Geomanist-Book; src: url(../fonts/Geomanist-Book.ttf); }
+@font-face { font-family: RobotoMono-Regular; src: url(../fonts/RobotoMono-Regular.ttf); }
 @font-face { font-family: OpenSans_Light; src: url(../fonts/OpenSans_Light.ttf); }
 @font-face { font-family: OpenSans_Regular; src: url(../fonts/OpenSans_Regular.ttf); }
 @font-face { font-family: OpenSans_Semibold; src: url(../fonts/OpenSans_Semibold.ttf); }
@@ -38,8 +40,8 @@ img { border: none !important; box-shadow: none !important; }
 .green_bg { text-align: left !important; }
 .green_bg a:link { color: #254356 !important; }
 .green_bg a:visited { color: #254356 !important; }
-.green_bg a:active { color: #000 !important; }
-.green_bg a:hover { color: #000 !important; }
+.green_bg a:active { color: rgba(255,255,255, 0.5) !important; }
+.green_bg a:hover { color: rgba(255,255,255, 0.5) !important; }
 .green_bg h2 { color: #FFF !important; }
 .green_bg h3 { color: #FFF !important; }
 .green_bg p { color: #FFF !important; }
@@ -48,8 +50,8 @@ img { border: none !important; box-shadow: none !important; }
 .blue_bg { text-align: left !important; }
 .blue_bg a:link { color: #FFF !important; }
 .blue_bg a:visited { color: #FFF !important; }
-.blue_bg a:active { color: #000 !important; }
-.blue_bg a:hover { color: #000 !important; }
+.blue_bg a:active { color: rgba(255,255,255, 0.5) !important; }
+.blue_bg a:hover { color: rgba(255,255,255, 0.5) !important; }
 .blue_bg h2 { color: #FFF !important; }
 .blue_bg h3 { color: #FFF !important; }
 .blue_bg p { color: #FFF !important; }
@@ -58,25 +60,33 @@ img { border: none !important; box-shadow: none !important; }
 .gray_bg { text-align: left !important; }
 .gray_bg a:link { color: #FFF !important; }
 .gray_bg a:visited { color: #FFF !important; }
-.gray_bg a:active { color: #000 !important; }
-.gray_bg a:hover { color: #000 !important; }
+.gray_bg a:active { color: rgba(255,255,255, 0.5) !important; }
+.gray_bg a:hover { color: rgba(255,255,255, 0.5) !important; }
 .gray_bg h2 { color: #FFF !important; }
 .gray_bg h3 { color: #FFF !important; }
 .gray_bg p { color: #FFF !important; }
 .gray_bg li { color: #FFF !important; }
 
-h2 { font-family: OpenSans_Light !important; font-size: 46px !important; font-weight: 100 !important; }
-h3 { font-family: OpenSans_Light !important; font-size: 36px !important; font-weight: 100 !important; }
+h2 { font-family: Geomanist-Book !important; font-size: 46px !important; font-weight: 100 !important; }
+h3 { font-family: Geomanist-Book !important; font-size: 36px !important; font-weight: 100 !important; }
 p { font-family: OpenSans_Light !important; font-size: 28px !important; font-weight: 100 !important; }
 li { font-family: OpenSans_Light !important; font-size: 28px !important; font-weight: 100 !important; }
 
+.reveal li {
+  line-height: 2;
+}
+
+.reveal ul {
+  margin-bottom: 20px;
+}
+
 .reveal pre { 
-  background-color: rgba(255, 251, 255, 0.9); 
-  color: darkblue; 
-  padding: 20px; 
+  background-color: #FFF;
+  color: #1488c6; 
+  padding: 15px; 
   border: 1px solid rgba(255,255,255, 0.1); 
   border-radius: 8px; 
-  font-family: monospace; 
+  font-family: RobotoMono-Regular, monospace; 
   white-space: pre; 
   font-weight: 300; 
   font-size: 0.4em; 
@@ -85,13 +95,10 @@ li { font-family: OpenSans_Light !important; font-size: 28px !important; font-we
 pre.large { font-size: 0.6em !important; }
 
 .reveal code {
-    font-family: monospace;
-    color: darkred;
-    border-style: solid;
-    border-color: darkgray;
-    border-width: 1px;
-    background-color: #FFFBFF;
-    padding: 2px;
+    font-family: RobotoMono-Regular, monospace;
+    color: #1488c6;
+    background-color: #FFF;
+    padding: 4px 10px;
 }
 
 .reveal code.smaller {
@@ -107,4 +114,12 @@ pre.large { font-size: 0.6em !important; }
 
 .reveal .topcorner img {
    background: rgba(255, 255, 255, 0);
+}
+
+.reveal .slide-menu-button a {
+  color: #fff;
+}
+
+.reveal .slide-menu-button a:hover {
+  color: rgba(255,255,255, 0.5);
 }

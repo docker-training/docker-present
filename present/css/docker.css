@@ -40,12 +40,11 @@ body {
 .reveal h5,
 .reveal h6 {
   margin: 0 0 20px 0;
-  color: #fff;
-  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-family: Geomanist-Book, OpenSans_Regular, "Source Sans Pro", Helvetica, sans-serif;
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: normal;
-  text-transform: uppercase;
   text-shadow: none;
   word-wrap: break-word; }
 
@@ -109,7 +108,8 @@ body {
 .reveal ol ol,
 .reveal ol ul {
   display: block;
-  margin-left: 40px; }
+  margin-left: 25px !important;
+}
 
 .reveal dt {
   font-weight: bold; }
@@ -145,13 +145,14 @@ body {
   margin: 20px auto;
   text-align: left;
   font-size: 0.39em;
-  font-family: monospace;
-  line-height: 1.2em;
+  font-family: RobotoMono-Regular, monospace;
+  line-height: 1.4em;
   word-wrap: break-word;
+  white-space: pre-wrap;
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3); }
 
 .reveal code {
-  font-family: monospace; }
+  font-family: RobotoMono-Regular, monospace; }
 
 .reveal pre code {
   display: block;
@@ -205,7 +206,6 @@ body {
  *********************************************/
 .reveal a {
   color: #42affa;
-  text-decoration: none;
   -webkit-transition: color 0.15s ease;
   -moz-transition: color 0.15s ease;
   transition: color 0.15s ease; }
