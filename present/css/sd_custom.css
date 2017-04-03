@@ -108,3 +108,8 @@ pre.large { font-size: 0.6em !important; }
 .reveal .topcorner img {
    background: rgba(255, 255, 255, 0);
 }
+
+span.keyword {
+   color: #FFFF00;
+   font-weight: bold !important;
+}
