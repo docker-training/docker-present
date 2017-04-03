@@ -16,7 +16,7 @@ docker-present
 
   Usage:
 
-    docker run -ti -v /var/run/docker.sock:/var/run/docker.sock training/docker-present:17.03-v1.0 -p <port>
+    docker run -ti -v /var/run/docker.sock:/var/run/docker.sock training/docker-present:dev -p <port>
 
     Note: Mounting the Docker socket is required.
 
@@ -73,7 +73,7 @@ select PRES in ${MENU}; do
                -p ${PORT}:${PORT} \
                --entrypoint="$(pwd)/present.py" \
                --volumes-from ${HOSTNAME} \
-               training/docker-present:17.03-v1.0 ${PRES} ${PORT}
+               training/docker-present:dev ${PRES} ${PORT}
     exit 1
   fi
 done
