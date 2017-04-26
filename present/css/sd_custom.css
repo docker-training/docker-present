@@ -32,7 +32,12 @@ ul li ul li { font-size: 24px !important; opacity: 0.7; }
 .reveal .controls .navigate-down, .reveal .controls .navigate-down.enabled { border-top-color: #FFF !important; }
 .reveal .controls .navigate-up, .reveal .controls .navigate-up.enabled { border-bottom-color: #FFF !important; }
 .reveal .slides { width: 80% !important; }
-img { border: none !important; box-shadow: none !important; }
+img { 
+  border: none !important; 
+  box-shadow: none !important;
+  background: rgba(0,0,0,0) !important; 
+}
+
 .slide_icon { width: 45px; height: 45px; display: inline-block; vertical-align: middle !important; border: none !important; margin-right: 20px !important; margin-top: 6px !important; box-shadow: none !important; }
 
 .green_bg { text-align: left !important; }
