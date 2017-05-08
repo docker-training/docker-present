@@ -108,11 +108,12 @@ pre.large { font-size: 0.6em !important; }
    background: rgba(255, 255, 255, 0);
 }
 
+<<<<<<< HEAD
 span.keyword {
    color: #FFFF00;
    font-weight: bold !important;
 }
-
+=======
 /* column layout (naming similar to Bootstrap) */
 .col-1 {
   width: 8.333%;
@@ -156,3 +157,4 @@ span.keyword {
 .third_container_two { width: 30%; margin: 0px 5% !important; float: left; }		
 .third_container_three { width: 30%; float: left; }
 /***********************************/
+>>>>>>> Added CSS for Bootstrap like grid layout
