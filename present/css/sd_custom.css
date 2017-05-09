@@ -7,8 +7,6 @@
 @font-face { font-family: OpenSans_Semibold; src: url(../fonts/OpenSans_Semibold.ttf); }
 /* Fonts */
 
-.half_container_one { width: 48% !important; float: left !important; }
-.half_container_two { width: 48% !important; float: right !important; }
 .cell { width: 100% !important; background-color: #254356; padding: 1px 30px !important; border-radius: 8px; box-sizing: border-box !important; margin-bottom: 10px !important; position: relative; min-height: 78px; box-sizing: border-box; }
 .button_stroke { width: auto !important; background-color: none; border: 3px solid #FFF !important; padding: 0px 30px !important; border-radius: 8px; box-sizing: border-box !important; margin-bottom: 10px !important; position: relative; display: inline-block !important; cursor: pointer; }
 .button_stroke p { margin: 15px 0px !important; }
@@ -22,10 +20,6 @@ ol, dl, ul { margin: 0 0 0 12px !important; }
 
 ul li ul li { font-size: 24px !important; opacity: 0.7; }
 .sub_sub_point { font-size: 24px !important; opacity: 0.7; }
-
-.third_container_one { width: 30%; float: left; }		
-.third_container_two { width: 30%; margin: 0px 5% !important; float: left; }		
-.third_container_three { width: 30%; float: left; }
 
 .controls .navigate-right.enabled { border-left-color: #FFF !important; }
 .reveal .controls .navigate-left, .reveal .controls .navigate-left.enabled { border-right-color: #FFF !important; }
@@ -118,3 +112,47 @@ span.keyword {
    color: #FFFF00;
    font-weight: bold !important;
 }
+
+/* column layout (naming similar to Bootstrap) */
+.col-1 {
+  width: 8.333%;
+  float: left;
+}
+.col-2 {
+  width: 16.667%;
+  float: left;
+}
+.col-3 {
+  width: 25%;
+  float: left;
+}
+.col-4 {
+  width: 33.333%;
+  float: left;
+}
+.col-6 {
+  width:50%;
+  float: left;
+}
+.col-8 {
+  width:66.667%;
+  float: left;
+}
+.col-9 {
+  width:75%;
+  float: left;
+}
+.col-12 {
+  width:100%;
+  float: left;
+}
+
+/* DO NOT USE!!! -- To be deleted */
+/* Use .col-1 ... .col-12 instead */
+.half_container_one { width: 48% !important; float: left !important; }
+.half_container_two { width: 48% !important; float: right !important; }
+
+.third_container_one { width: 30%; float: left; }		
+.third_container_two { width: 30%; margin: 0px 5% !important; float: left; }		
+.third_container_three { width: 30%; float: left; }
+/***********************************/
