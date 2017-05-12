@@ -34,7 +34,6 @@ COPY present/prompt.sh /bin/prompt
 # default presentation repository
 # Note: Switching to 'ARG' as soon as the Docker Hub stack supports '--build-args'
 #RUN git clone https://github.com/docker-training/presentations /opt/revealjs/src
-#ADD presentations /opt/revealjs/src
-RUN mkdir /opt/revealjs/src
+ADD presentations /opt/revealjs/src
 
 ENTRYPOINT ["/bin/prompt"]
