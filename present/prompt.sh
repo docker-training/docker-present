@@ -17,7 +17,7 @@ docker-present
 
   Usage:
 
-    docker run -ti -v /var/run/docker.sock:/var/run/docker.sock training/docker-present:dev -p <port>
+    docker run -ti -v /var/run/docker.sock:/var/run/docker.sock dougtoppin/docker-present -p <port>
 
     Note: Mounting the Docker socket is required.
 
@@ -32,7 +32,7 @@ function run() {
              -p $2:$2 \
              --entrypoint="$(pwd)/present.py" \
              --volumes-from ${HOSTNAME} \
-             training/docker-present:dev $1 $2
+             dougtoppin/docker-present $1 $2
   exit 1
 }
 

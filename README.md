@@ -118,6 +118,12 @@ Checking connectivity... done.
 kizbitz@docker:~/sandbox$ docker run -ti -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/mypresentations:/tmp/src training/docker-present -p 8000
 ```
 
+If you add or modify modules the changes can be displayed by running a script in the already running container as follows and refeshing your browser tab.
+
+```
+$ docker container exec CONTAINERID /tmp/update.sh class-name
+Updating presentation 'class-name' ...
+```
 
 ## Templates
 

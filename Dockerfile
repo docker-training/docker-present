@@ -1,6 +1,7 @@
 FROM python:2.7
-
-MAINTAINER Jerry Baker <jbaker@docker.com>
+LABEL maintainer "dougtoppin@gmail.com"
+LABEL org.label-schema.vcs-url="https://github.com/dougtoppin/docker-present"
+LABEL org.label-schema.description="Controller image for Docker training courses"
 
 # required packages
 RUN apt-get update && apt-get -y install \
@@ -30,6 +31,8 @@ COPY present/fonts /opt/revealjs/fonts/
 COPY present/images /opt/revealjs/images/
 COPY present/templates /opt/revealjs/templates
 COPY present/prompt.sh /bin/prompt
+COPY present/update.py /tmp/update.py
+COPY present/update.sh /tmp/update.sh
 
 # default presentation repository
 # Note: Switching to 'ARG' as soon as the Docker Hub stack supports '--build-args'
