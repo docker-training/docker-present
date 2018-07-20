@@ -71,7 +71,16 @@
                     { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
                     { src: 'plugin/zoom-js/zoom.js', async: true },
                     { src: 'plugin/notes/notes.js', async: true }
-                ]
+                ]/*,
+
+                // uncomment this block to make left/right advance slide and up/down advance chapter.
+                keyboard: {
+                    39: 'next',
+                    37: 'prev',
+                    38: 'left',
+                    40: 'right'
+                }
+                */
             });
 
         </script>
