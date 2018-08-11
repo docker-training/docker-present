@@ -1,19 +1,17 @@
-FROM node:9.5
+FROM node:10.8.0-slim
 
 # required packages
-RUN apt-get update && apt-get -y install \
-    bsdmainutils \
-    tree
-
-# docker
-RUN curl -sSL https://get.docker.com | sh
+RUN apt-get update && \
+    apt-get -y install bsdmainutils tree git bzip2 python2.7 && \
+    mv /usr/bin/python2.7 /usr/bin/python && \
+    curl -sSL https://get.docker.com | sh
 
 # reveal.js
 WORKDIR /opt/revealjs
-RUN ln -s /usr/bin/nodejs /usr/bin/node
-RUN git clone https://github.com/hakimel/reveal.js.git /opt/revealjs
-RUN git clone https://github.com/denehyg/reveal.js-menu.git /opt/revealjs/plugin/menu
-RUN npm cache clean --force && npm install
+RUN ln -s /usr/bin/nodejs /usr/bin/node && \
+    git clone https://github.com/hakimel/reveal.js.git /opt/revealjs && \
+    git clone https://github.com/denehyg/reveal.js-menu.git /opt/revealjs/plugin/menu && \
+    npm cache clean --force && npm install
 
 # setup
 COPY present/present.py /opt/revealjs/
