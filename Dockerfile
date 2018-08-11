@@ -1,9 +1,13 @@
-FROM node:9.5
+FROM node:10.8.0-slim
 
 # required packages
 RUN apt-get update && apt-get -y install \
     bsdmainutils \
-    tree
+    tree \
+    git \
+    bzip2 \
+    python2.7
+RUN mv /usr/bin/python2.7 /usr/bin/python  
 
 # docker
 RUN curl -sSL https://get.docker.com | sh
