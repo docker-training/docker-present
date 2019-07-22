@@ -13,6 +13,7 @@ COPY present/templates /opt/revealjs/templates
 COPY present/prompt.sh /bin/prompt
 
 # default presentation repository
+RUN rm -rf /opt/revealjs/src
 ADD presentations /opt/revealjs/src
 
 ENTRYPOINT ["/bin/prompt"]
