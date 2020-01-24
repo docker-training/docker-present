@@ -70,7 +70,7 @@ def adjust_image_paths(answer):
         else:
             current = 'slides.md'
         with open(os.path.join(MODS, module, current), 'r') as slides:
-            file=slides.read().replace('images/', 'src/modules/' + module + '/images/')
+            file=slides.read().replace('images/', 'src/images/')
         with open(os.path.join(MODS, module, current), 'w') as slides:
             slides.write(file)
 
