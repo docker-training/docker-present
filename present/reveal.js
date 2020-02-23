@@ -2029,7 +2029,9 @@
 						else {
 							slide.style.top = Math.max( ( size.height - slide.scrollHeight ) / 2, 0 ) + 'px';
                                                         var banner = slide.querySelectorAll(".banner")
-                                                        banner.style.top = -1*(Math.max( ( size.height - slide.scrollHeight ) / 2, 0 )) + 'px';
+                                                        if(banner.length > 0){
+                                                            banner[0].style.top = -1*(Math.max( ( size.height - slide.scrollHeight ) / 2, 0 )) + 'px';
+                                                        }
 						}
 					}
 					else {
