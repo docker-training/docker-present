@@ -11,6 +11,7 @@ COPY present/fonts /opt/revealjs/fonts/
 COPY present/images /opt/revealjs/images/
 COPY present/templates /opt/revealjs/templates
 COPY present/prompt.sh /bin/prompt
+COPY present/reveal.js /opt/revealjs/js/reveal.js
 
 # default presentation repository
 RUN rm -rf /opt/revealjs/src
