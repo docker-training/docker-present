@@ -2028,7 +2028,7 @@
 						}
 						else {
 							slide.style.top = Math.max( ( size.height - slide.scrollHeight ) / 2, 0 ) + 'px';
-                                                        banner = slide.querySelectorAll(".banner")
+                                                        var banner = slide.querySelectorAll(".banner")
                                                         banner.style.top = -1*(Math.max( ( size.height - slide.scrollHeight ) / 2, 0 )) + 'px';
 						}
 					}
