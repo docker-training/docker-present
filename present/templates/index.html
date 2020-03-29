@@ -71,17 +71,28 @@
                     { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
                     { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
                     { src: 'plugin/zoom-js/zoom.js', async: true },
-                    { src: 'plugin/notes/notes.js', async: true }
-                ]/*,
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/chalkboard/chalkboard.js' }
+                ],
 
-                // uncomment this block to make left/right advance slide and up/down advance chapter.
+                keyboard: {
+                    66: function() { },
+                    67: function() { RevealChalkboard.toggleNotesCanvas() },	// toggle notes canvas when 'c' is pressed
+		            46: function() { RevealChalkboard.clear() },	// clear chalkboard when 'DEL' is pressed
+                    8: function() { RevealChalkboard.reset() },	// reset chalkboard data on current slide when 'BACKSPACE' is pressed
+                    //68: function() { RevealChalkboard.download() },	// downlad recorded chalkboard drawing when 'd' is pressed
+                    88: function() { RevealChalkboard.colorNext() },	// cycle colors forward when 'x' is pressed
+                    89: function() { RevealChalkboard.colorPrev() }	// cycle colors backward when 'y' is pressed
+                }
+
+                /* add the following keys to the keyboard block to left/right advance slide and up/down advance chapter.
+
                 keyboard: {
                     39: 'next',
                     37: 'prev',
                     38: 'left',
                     40: 'right'
-                }
-                */
+                }*/
             });
 
         </script>
