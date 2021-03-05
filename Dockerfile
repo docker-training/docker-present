@@ -1,4 +1,4 @@
-FROM training/docker-present:ee2.1-v1.8
+FROM mirantistraining/docker-present:ee2.1-v1.8
 
 
 # setup
