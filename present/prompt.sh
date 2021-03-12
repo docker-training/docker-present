@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Docker ENTRYPOINT for training/docker-present
+# Docker ENTRYPOINT for mirantistraining/docker-present
 
 # usage/help
 function usage() {
@@ -17,7 +17,7 @@ docker-present
 
   Usage:
 
-    docker run -ti -v /var/run/docker.sock:/var/run/docker.sock training/docker-present:PLATFORM-vRELEASE -p <port>
+    docker run -ti -v /var/run/docker.sock:/var/run/docker.sock mirantistraining/docker-present:PLATFORM-vRELEASE -p <port>
 
     Note: Mounting the Docker socket is required.
 
@@ -32,7 +32,7 @@ function run() {
              -p $2:$2 \
              --entrypoint="$(pwd)/present.py" \
              --volumes-from ${HOSTNAME} \
-             training/docker-present:PLATFORM-vRELEASE $1 $2
+             mirantistraining/docker-present:PLATFORM-vRELEASE $1 $2
   exit 1
 }
 
