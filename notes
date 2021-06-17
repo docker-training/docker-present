@@ -1,0 +1,11 @@
+to get code highlighting looking nice, drop:
+
+sd_custom.css
+.reveal pre
+  padding 10px
+.reveal code
+  font-size 26px
+  
+docker.css
+.reveal pre
+  line-height 1.2em

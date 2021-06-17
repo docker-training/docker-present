@@ -1,0 +1,167 @@
+/* Default Print Stylesheet Template
+   by Rob Glazebrook of CSSnewbie.com
+   Last Updated: June 4, 2008
+
+   Feel free (nay, compelled) to edit, append, and
+   manipulate this file as you see fit. */
+@media print {
+  html:not(.print-pdf) {
+    background: #fff;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    /* Need to reduce the size of the fonts for printing */
+  }
+  html:not(.print-pdf) body {
+    background: #fff;
+    font-size: 20pt;
+    width: auto;
+    height: auto;
+    border: 0;
+    margin: 0 5%;
+    padding: 0;
+    overflow: visible;
+    float: none !important;
+  }
+  html:not(.print-pdf) .nestedarrow,
+html:not(.print-pdf) .controls,
+html:not(.print-pdf) .fork-reveal,
+html:not(.print-pdf) .share-reveal,
+html:not(.print-pdf) .state-background,
+html:not(.print-pdf) .reveal .progress,
+html:not(.print-pdf) .reveal .backgrounds,
+html:not(.print-pdf) .reveal .slide-number {
+    display: none !important;
+  }
+  html:not(.print-pdf) body, html:not(.print-pdf) p, html:not(.print-pdf) td, html:not(.print-pdf) li {
+    font-size: 20pt !important;
+    color: #000;
+  }
+  html:not(.print-pdf) h1, html:not(.print-pdf) h2, html:not(.print-pdf) h3, html:not(.print-pdf) h4, html:not(.print-pdf) h5, html:not(.print-pdf) h6 {
+    color: #000 !important;
+    height: auto;
+    line-height: normal;
+    text-align: left;
+    letter-spacing: normal;
+  }
+  html:not(.print-pdf) h1 {
+    font-size: 28pt !important;
+  }
+  html:not(.print-pdf) h2 {
+    font-size: 24pt !important;
+  }
+  html:not(.print-pdf) h3 {
+    font-size: 22pt !important;
+  }
+  html:not(.print-pdf) h4 {
+    font-size: 22pt !important;
+    font-variant: small-caps;
+  }
+  html:not(.print-pdf) h5 {
+    font-size: 21pt !important;
+  }
+  html:not(.print-pdf) h6 {
+    font-size: 20pt !important;
+    font-style: italic;
+  }
+  html:not(.print-pdf) a:link,
+html:not(.print-pdf) a:visited {
+    color: #000 !important;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  html:not(.print-pdf) ul, html:not(.print-pdf) ol, html:not(.print-pdf) div, html:not(.print-pdf) p {
+    visibility: visible;
+    position: static;
+    width: auto;
+    height: auto;
+    display: block;
+    overflow: visible;
+    margin: 0;
+    text-align: left !important;
+  }
+  html:not(.print-pdf) .reveal pre,
+html:not(.print-pdf) .reveal table {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  html:not(.print-pdf) .reveal pre code {
+    padding: 20px;
+  }
+  html:not(.print-pdf) .reveal blockquote {
+    margin: 20px 0;
+  }
+  html:not(.print-pdf) .reveal .slides {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    left: 0 !important;
+    top: 0 !important;
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+    zoom: 1 !important;
+    transform: none !important;
+    overflow: visible !important;
+    display: block !important;
+    text-align: left !important;
+    perspective: none;
+    perspective-origin: 50% 50%;
+  }
+  html:not(.print-pdf) .reveal .slides section {
+    visibility: visible !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    display: block !important;
+    overflow: visible !important;
+    left: 0 !important;
+    top: 0 !important;
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+    padding: 60px 20px !important;
+    z-index: auto !important;
+    opacity: 1 !important;
+    page-break-after: always !important;
+    transform-style: flat !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  html:not(.print-pdf) .reveal .slides section.stack {
+    padding: 0 !important;
+  }
+  html:not(.print-pdf) .reveal section:last-of-type {
+    page-break-after: avoid !important;
+  }
+  html:not(.print-pdf) .reveal section .fragment {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+  html:not(.print-pdf) .reveal section img {
+    display: block;
+    margin: 15px 0px;
+    background: white;
+    border: 1px solid #666;
+    box-shadow: none;
+  }
+  html:not(.print-pdf) .reveal section small {
+    font-size: 0.8em;
+  }
+  html:not(.print-pdf) .reveal .hljs {
+    max-height: 100%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    font-size: 15pt;
+  }
+  html:not(.print-pdf) .reveal .hljs .hljs-ln-numbers {
+    white-space: nowrap;
+  }
+  html:not(.print-pdf) .reveal .hljs td {
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+}
+
+/*# sourceMappingURL=paper.css.map */

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <title>Docker Present</title>
+
+        <meta name="description" content="Docker Present">
+        <meta name="author" content="Jerry Baker / Bill Mills">
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+        <!-- css -->
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="src/css/docker.css" id="theme">
+        <link rel="stylesheet" href="src/css/sd_custom.css">
+        <link rel="stylesheet" href="src/css/docker-code.css">
+        <link rel="stylesheet" href="plugin/highlight/nightowl.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+
+        <!--[if lt IE 9]>
+        <script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        <p class='brand-copy'>PLATFORM-vRELEASE © 2021 Mirantis, Inc.</p>
+        <img src="images/mirantis-flat.png" class='brand-mirantis' alt="mirantis logo">
+        <div class="reveal">
+            <div class="slides">
+                ---modules---
+            </div>
+        </div>
+        <div class='static-foot'></div>
+        <script src="dist/reveal.js"></script>
+        <script src="plugin/highlight/highlight.js"></script>
+        <script src="plugin/notes/notes.js"></script>
+        <script>
+
+            // Full list of configuration options available at:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+
+                slideNumber: 'c',
+
+                transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+                menu: {
+                    themes: false,
+                    transitions: false,
+                },
+
+                plugins: [
+                    RevealHighlight,
+                    RevealNotes
+                ],
+
+                keyboard: {
+                    66: function() { },
+                    67: function() { RevealChalkboard.toggleNotesCanvas() },	// toggle notes canvas when 'c' is pressed
+		            46: function() { RevealChalkboard.clear() },	// clear chalkboard when 'DEL' is pressed
+                    8: function() { RevealChalkboard.reset() },	// reset chalkboard data on current slide when 'BACKSPACE' is pressed
+                    //68: function() { RevealChalkboard.download() },	// downlad recorded chalkboard drawing when 'd' is pressed
+                    88: function() { RevealChalkboard.colorNext() },	// cycle colors forward when 'x' is pressed
+                    89: function() { RevealChalkboard.colorPrev() }	// cycle colors backward when 'y' is pressed
+                }
+
+                /* add the following keys to the keyboard block to left/right advance slide and up/down advance chapter.
+
+                keyboard: {
+                    39: 'next',
+                    37: 'prev',
+                    38: 'left',
+                    40: 'right'
+                }*/
+            });
+
+        </script>
+
+    </body>
+</html>
