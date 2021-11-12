@@ -1,6 +1,6 @@
 # docker-present
 
-Controller image for official Docker training courses.
+Controller image for official Mirantis training courses.
 
 ## Overview
 
@@ -21,16 +21,16 @@ For instructions on how to create modules and presentations see the related Gith
 Pull the image:
 
 ```
-kizbitz@docker:~$ docker pull training/docker-present
+kizbitz@docker:~$ docker pull mirantistraining/docker-present
 Using default tag: latest
-latest: Pulling from training/docker-present
+latest: Pulling from mirantistraining/docker-present
 dbacfa057b30: Pull complete
 
 --- removed ---
 
 0df5b3ba9e25: Pull complete
 Digest: sha256:168922341fcec9f2ec78ec8b1f62ca461b8218624c79501acfec80c49c2441bb
-Status: Downloaded newer image for training/docker-present:latest
+Status: Downloaded newer image for mirantistraining/docker-present:latest
 ```
 
 ### Help
@@ -38,7 +38,7 @@ Status: Downloaded newer image for training/docker-present:latest
 Launching a container from the image without any arguments will display the help (or use the `-h` flag):
 
 ```
-kizbitz@docker:~$ docker run -ti --rm -v /var/run/docker.sock:/var/run/docker.sock training/docker-present
+kizbitz@docker:~$ docker run -ti --rm -v /var/run/docker.sock:/var/run/docker.sock mirantistraining/docker-present
 
 docker-present
 
@@ -49,7 +49,7 @@ docker-present
 
   Usage:
 
-    docker run -ti --rm --name=docker-present -v /var/run/docker.sock:/var/run/docker.sock training/docker-present -p <port>
+    docker run -ti --rm --name=mirantis-present -v /var/run/docker.sock:/var/run/docker.sock mirantistraining/docker-present -p <port>
 ```
 
 ### Running a presentation:
@@ -57,19 +57,18 @@ docker-present
 **Note:** Mounting the Docker socket and specifying a port is required.
 
 ```
-kizbitz@docker:~$ docker run -ti --rm -v /var/run/docker.sock:/var/run/docker.sock training/docker-present -p 8000
+kizbitz@docker:~$ docker run -ti --rm -v /var/run/docker.sock:/var/run/docker.sock mirantistraining/docker-present -p 8000
 ```
 
 Select a presentation to serve from the menu:
 
 ```
-kizbitz@docker:~$ docker run -ti --rm -v /var/run/docker.sock:/var/run/docker.sock training/docker-present -p 8000
+kizbitz@docker:~$ docker run -ti --rm -v /var/run/docker.sock:/var/run/docker.sock mirantistraining/docker-present -p 8000
 
 Available Presentations:
 
-1) presentation1
-2) presentation2
-3) presentation3
+1) presentation1  3) presentation3
+2) presentation2  4) presentation4
 
 Enter selection: 2
 Attempting to start presentation 'presentation2' on port: 8000 ...
@@ -87,14 +86,12 @@ You can use a custom/one-off presentation file by:
 Example:
 
 ```
-kizbitz@docker:~$ docker run -ti -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/custom:/opt/revealjs/src/presentations/custom training/docker-present -p 8000
+kizbitz@docker:~$ docker run -ti -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/custom:/opt/revealjs/src/presentations/custom mirantistraining/docker-present -p 8000
 
 Available Presentations:
 
-1) custom
-2) presentation1
-3) presentation2
-4) presentation3
+1) custom         3) presentation3
+2) presentation1  4) presentation4
 
 Enter selection: 1
 ```
@@ -115,7 +112,7 @@ Receiving objects: 100% (107/107), 28.69 KiB | 0 bytes/s, done.
 Resolving deltas: 100% (22/22), done.
 Checking connectivity... done.
 
-kizbitz@docker:~/sandbox$ docker run -ti -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/mypresentations:/tmp/src training/docker-present -p 8000
+kizbitz@docker:~/sandbox$ docker run -ti -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/mypresentations:/tmp/src miranitstraining/docker-present -p 8000
 ```
 
 
